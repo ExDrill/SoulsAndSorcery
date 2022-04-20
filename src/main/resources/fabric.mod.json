@@ -1,29 +1,26 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "soulsandsorcery",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Souls & Sorcery",
+  "description": "Adds in vanilla styled magic into the game!",
   "authors": [
-    "Me!"
+    "ExDrill",
+    "KekeCreations"
   ],
-  "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
-  },
-
+  "contact": {},
   "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/soulsandsorcery/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "com.exdrill.soulsandsorcery.SoulsAndSorcery"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "soulsandsorcery.mixins.json"
   ],
 
   "depends": {
@@ -32,7 +29,5 @@
     "minecraft": "1.18.x",
     "java": ">=17"
   },
-  "suggests": {
-    "another-mod": "*"
-  }
+  "suggests": {}
 }
