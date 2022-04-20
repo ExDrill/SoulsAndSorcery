@@ -41,6 +41,7 @@ public class LivingEntityMixin {
         if (!entity.world.isClient) {
             if (adversary instanceof PlayerEntity && adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) > 0) {
 
+                // PLACEHOLDER
                 int amplifier = (int) (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) - 1);
 
                 switch((int) adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING)) {
