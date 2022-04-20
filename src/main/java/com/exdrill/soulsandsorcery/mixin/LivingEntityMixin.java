@@ -1,24 +1,11 @@
 package com.exdrill.soulsandsorcery.mixin;
 
 import com.exdrill.soulsandsorcery.SoulsAndSorcery;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ItemEntity;
+import com.exdrill.soulsandsorcery.misc.PlayerEntityInterface;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.boss.WitherEntity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -41,23 +28,11 @@ public class LivingEntityMixin {
         if (!entity.world.isClient) {
             if (adversary instanceof PlayerEntity && adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) > 0) {
 
-                // PLACEHOLDER
-                int amplifier = (int) (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) - 1);
+                int levelSoulGathering = (int) adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING);
 
-                switch((int) adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING)) {
-                    case 1: {
-                        adversary.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 100, amplifier));
-                    }
-                    case 2: {
-                        adversary.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 100, amplifier));
-                    }
-                    case 3: {
-                        adversary.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 100, amplifier));
-                    }
+                if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == levelSoulGathering) {
+                    ((PlayerEntityInterface) adversary).addSouls(levelSoulGathering);
                 }
-
-
-
 
                 System.out.println("Entity killed by " + adversary.getName().getString() + " with a soul gathering level of " + adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING));
             }
