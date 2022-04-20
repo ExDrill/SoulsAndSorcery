@@ -5,7 +5,12 @@ import com.exdrill.soulsandsorcery.misc.PlayerEntityInterface;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -13,7 +18,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(LivingEntity.class)
-public class LivingEntityMixin {
+public abstract class LivingEntityMixin {
+
+
 
     LivingEntity entity = (LivingEntity)(Object)this;
 
@@ -25,18 +32,19 @@ public class LivingEntityMixin {
 
     @Inject(method = "onKilledBy", at = @At(value = "HEAD"))
     public void onKilledBy(LivingEntity adversary, CallbackInfo ci) {
-        if (!entity.world.isClient) {
-            if (adversary instanceof PlayerEntity && adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) > 0) {
-
-                int levelSoulGathering = (int) adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING);
-
-                if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == levelSoulGathering) {
-                    ((PlayerEntityInterface) adversary).addSouls(levelSoulGathering);
-                }
-
-                System.out.println("Entity killed by " + adversary.getName().getString() + " with a soul gathering level of " + adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING));
+        if (adversary instanceof PlayerEntity && adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) > 0) {
+            if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == 1) {
+                ((PlayerEntityInterface) adversary).addSouls(1);
+            }
+            if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == 2) {
+                ((PlayerEntityInterface) adversary).addSouls(2);
+            }
+            if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == 3) {
+                ((PlayerEntityInterface) adversary).addSouls(3);
             }
 
+            System.out.println("Entity killed by " + adversary.getName().getString() + " with a soul gathering level of " + adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING));
         }
+
     }
 }
