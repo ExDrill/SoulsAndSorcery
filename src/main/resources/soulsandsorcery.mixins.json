@@ -4,8 +4,7 @@
   "package": "com.exdrill.soulsandsorcery.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "LivingEntityMixin",
-    "PlayerEntityMixin"
+    "LivingEntityMixin"
   ],
   "client": [
   ],

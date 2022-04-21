@@ -8,7 +8,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
@@ -27,7 +26,7 @@ public class PetrifiedArtifactItem extends Item {
     }
 
     public UseAction getUseAction(ItemStack stack) {
-        return UseAction.BOW;
+        return UseAction.BLOCK;
     }
 
     public int getMaxUseTime(ItemStack stack) {
@@ -37,7 +36,7 @@ public class PetrifiedArtifactItem extends Item {
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (user.getItemUseTime() > 20) {
+        if (user.getItemUseTime() > 20 && !((PlayerEntityInterface) user).canSoulHarvest()) {
             stack.decrement(1);
             double x = user.getX();
             double y = user.getY();
