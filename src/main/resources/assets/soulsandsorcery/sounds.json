@@ -1,0 +1,14 @@
+{
+  "item.petrified_artifact.absorb": {
+    "subtitle": "subtitles.soulsandsorcery.petrified_artifact.absorb",
+    "sounds": [
+      "soulsandsorcery:item/petrified_artifact/absorb"
+    ]
+  },
+  "item.petrified_artifact.escape": {
+    "subtitle": "subtitles.soulsandsorcery.petrified_artifact.escape",
+    "sounds": [
+      "soulsandsorcery:item/petrified_artifact/escape"
+    ]
+  }
+}

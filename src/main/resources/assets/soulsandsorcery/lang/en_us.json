@@ -1,5 +1,7 @@
 {
   "attribute.name.generic.soul_gathering": "Soul Gathering",
   "item.soulsandsorcery.haunted_sickle": "Haunted Sickle",
-  "item.soulsandsorcery.petrified_artifact": "Petrified Artifact"
+  "item.soulsandsorcery.petrified_artifact": "Petrified Artifact",
+  "subtitles.soulsandsorcery.petrified_artifact.absorb": "Player absorbs artifact",
+  "subtitles.soulsandsorcery.petrified_artifact.escape": "Player loses artifact"
 }

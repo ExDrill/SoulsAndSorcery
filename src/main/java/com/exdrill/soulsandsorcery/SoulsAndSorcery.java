@@ -1,6 +1,7 @@
 package com.exdrill.soulsandsorcery;
 
 import com.exdrill.soulsandsorcery.registry.ModItems;
+import com.exdrill.soulsandsorcery.registry.ModSounds;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.entity.attribute.ClampedEntityAttribute;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -17,5 +18,6 @@ public class SoulsAndSorcery implements ModInitializer {
 	public void onInitialize() {
 		ModItems.registerItems();
 		Registry.register(Registry.ATTRIBUTE, new Identifier(SoulsAndSorcery.MODID, "generic.soul_gathering"), GENERIC_SOUL_GATHERING);
+		ModSounds.register();
 	}
 }

@@ -3,10 +3,10 @@ package com.exdrill.soulsandsorcery.mixin;
 import com.exdrill.soulsandsorcery.misc.PlayerEntityInterface;
 import com.exdrill.soulsandsorcery.registry.ModItems;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.world.GameRules;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -66,15 +66,5 @@ public class PlayerEntityMixin implements PlayerEntityInterface {
         this.canSoulHarvest = canSoulHarvest;
     }
 
-
-    // Petrified Artifact Drop
-    @Inject(method = "onDeath", at = @At("HEAD"))
-    public void onDeath(CallbackInfo ci) {
-        if (canSoulHarvest && !playerEntity.world.getGameRules().getBoolean(GameRules.KEEP_INVENTORY)) {
-            ItemEntity itemEntity = new ItemEntity(playerEntity.world, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), new ItemStack(ModItems.PETRIFIED_ARTIFACT));
-            playerEntity.world.spawnEntity(itemEntity);
-            System.out.println("Spawned petrified artifact");
-        }
-    }
 }
 
