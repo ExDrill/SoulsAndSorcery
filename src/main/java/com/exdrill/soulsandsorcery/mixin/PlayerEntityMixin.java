@@ -1,10 +1,13 @@
 package com.exdrill.soulsandsorcery.mixin;
 
 import com.exdrill.soulsandsorcery.misc.PlayerEntityInterface;
+import com.exdrill.soulsandsorcery.registry.ModItems;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -70,8 +73,19 @@ public class PlayerEntityMixin implements PlayerEntityInterface {
         playerEntity.getDataTracker().set(IS_SOUL_HARVESTER, soulHarvester);
     }
 
+
     static {
         IS_SOUL_HARVESTER = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    }
+
+    // Petrified Artifact Drop
+    @Inject(method = "onDeath", at = @At("HEAD"))
+    public void onDeath(CallbackInfo ci) {
+        if (this.canSoulHarvest()) {
+            ItemEntity itemEntity = new ItemEntity(playerEntity.world, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), new ItemStack(ModItems.PETRIFIED_ARTIFACT));
+            playerEntity.world.spawnEntity(itemEntity);
+        }
+
     }
 }
 

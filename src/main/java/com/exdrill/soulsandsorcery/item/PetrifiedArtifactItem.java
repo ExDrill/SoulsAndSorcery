@@ -1,5 +1,6 @@
 package com.exdrill.soulsandsorcery.item;
 
+import com.exdrill.soulsandsorcery.misc.PlayerEntityInterface;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -44,6 +45,7 @@ public class PetrifiedArtifactItem extends Item {
             BlockPos pos = new BlockPos(x, y, z);
             world.playSound(null, pos, SoundEvents.PARTICLE_SOUL_ESCAPE, SoundCategory.PLAYERS, 100.0F, 1.0F);
             user.world.addParticle(ParticleTypes.SOUL, user.getX(), user.getY() + 1, user.getZ(), 0, 0, 0);
+            ((PlayerEntityInterface) user).setSoulHarvester(true);
         }
         super.onStoppedUsing(stack, world, user, remainingUseTicks);
     }
