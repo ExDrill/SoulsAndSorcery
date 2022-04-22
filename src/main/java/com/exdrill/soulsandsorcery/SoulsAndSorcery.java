@@ -30,7 +30,7 @@ public class SoulsAndSorcery implements ModInitializer {
 		ModBlocks.register();
 
 		UniformLootNumberProvider uniformLootNumberProvider = UniformLootNumberProvider.create(0, 1);
-		LootCondition lootCondition = RandomChanceLootCondition.builder(30).build();
+		LootCondition lootCondition = RandomChanceLootCondition.builder(60).build();
 		LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
 			if (NETHER_FORTRESS_LOOT.equals(id)) {
 				FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
