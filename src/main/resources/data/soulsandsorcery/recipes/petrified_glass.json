@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "minecraft:soul_sand"
+  },
+  "result": "soulsandsorcery:petrified_glass",
+  "experience": 0.3,
+  "cookingtime": 200
+}

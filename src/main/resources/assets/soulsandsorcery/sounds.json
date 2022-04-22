@@ -10,5 +10,21 @@
     "sounds": [
       "soulsandsorcery:item/petrified_artifact/escape"
     ]
+  },
+  "block.petrified_glass.break": {
+    "subtitle": "subtitles.soulsandsorcery.block.petrified_glass.break",
+    "sounds": [
+      "soulsandsorcery:block/petrified_glass/dig1",
+      "soulsandsorcery:block/petrified_glass/dig2",
+      "soulsandsorcery:block/petrified_glass/dig3"
+    ]
+  },
+  "block.petrified_glass.place": {
+    "subtitle": "subtitles.soulsandsorcery.block.petrified_glass.place",
+    "sounds": [
+      "soulsandsorcery:block/petrified_glass/place1",
+      "soulsandsorcery:block/petrified_glass/place2",
+      "soulsandsorcery:block/petrified_glass/place3"
+    ]
   }
 }

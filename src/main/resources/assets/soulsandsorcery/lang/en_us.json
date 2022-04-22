@@ -2,6 +2,9 @@
   "attribute.name.generic.soul_gathering": "Soul Gathering",
   "item.soulsandsorcery.haunted_sickle": "Haunted Sickle",
   "item.soulsandsorcery.petrified_artifact": "Petrified Artifact",
+  "block.soulsandsorcery.petrified_glass": "Petrified Glass",
   "subtitles.soulsandsorcery.petrified_artifact.absorb": "Player absorbs artifact",
-  "subtitles.soulsandsorcery.petrified_artifact.escape": "Player loses artifact"
+  "subtitles.soulsandsorcery.petrified_artifact.escape": "Player loses artifact",
+  "subtitles.soulsandsorcery.block.petrified_glass.break": "Block broken",
+  "subtitles.soulsandsorcery.block.petrified_glass.place": "Block placed"
 }

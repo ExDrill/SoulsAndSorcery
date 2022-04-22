@@ -40,8 +40,6 @@ public abstract class LivingEntityMixin implements PlayerEntityInterface {
         if (this.soulsAmount < 0) {
             this.soulsAmount = 0;
         }
-
-
     }
 
     // Soul Methods
@@ -91,31 +89,33 @@ public abstract class LivingEntityMixin implements PlayerEntityInterface {
 
     @Inject(method = "onKilledBy", at = @At(value = "HEAD"))
     public void onKilledBy(LivingEntity adversary, CallbackInfo ci) {
-        if (((PlayerEntityInterface) adversary).canSoulHarvest()) {
-            if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == 0) {
-                ((PlayerEntityInterface) adversary).addSouls(1);
-            }
-            if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == 1) {
-                ((PlayerEntityInterface) adversary).addSouls(2);
-            }
-            if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == 2) {
-                ((PlayerEntityInterface) adversary).addSouls(3);
-            }
-            if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == 3) {
-                ((PlayerEntityInterface) adversary).addSouls(4);
-            }
-            World world = ((LivingEntity)(Object)this).world;
-            if (!world.isClient) {
+        World world = ((LivingEntity)(Object)this).world;
+        if (!world.isClient && adversary != null) {
+            if (((PlayerEntityInterface) adversary).canSoulHarvest()) {
+                if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == 0) {
+                    ((PlayerEntityInterface) adversary).addSouls(1);
+                }
+                if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == 1) {
+                    ((PlayerEntityInterface) adversary).addSouls(2);
+                }
+                if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == 2) {
+                    ((PlayerEntityInterface) adversary).addSouls(3);
+                }
+                if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == 3) {
+                    ((PlayerEntityInterface) adversary).addSouls(4);
+                }
+
                 double x = entity.getX();
                 double y = entity.getY();
                 double z = entity.getZ();
                 BlockPos pos = new BlockPos(x, y, z);
                 world.playSound(null, pos, SoundEvents.PARTICLE_SOUL_ESCAPE, SoundCategory.PLAYERS, 50.0F, 1.0F);
                 ((ServerWorld)world).spawnParticles(ParticleTypes.SOUL, entity.getX(), entity.getY() + (entity.getStandingEyeHeight() * 0.7), entity.getZ(), 1, 0, 0, 0, 0);
-            }
 
-            System.out.println("Entity killed by " + adversary.getName().getString() + " with a soul gathering level of " + adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING));
+                System.out.println("Entity killed by " + adversary.getName().getString() + " with a soul gathering level of " + adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING));
+            }
         }
+
     }
 
     @Inject(method = "drop", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;shouldDropLoot()Z"))

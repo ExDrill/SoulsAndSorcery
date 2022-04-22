@@ -17,6 +17,9 @@
   "entrypoints": {
     "main": [
       "com.exdrill.soulsandsorcery.SoulsAndSorcery"
+    ],
+    "client": [
+      "com.exdrill.soulsandsorcery.SoulsAndSorceryClient"
     ]
   },
   "mixins": [
