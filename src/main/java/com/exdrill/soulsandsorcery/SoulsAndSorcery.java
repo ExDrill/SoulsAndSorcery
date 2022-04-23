@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
 import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
 import net.minecraft.entity.attribute.ClampedEntityAttribute;
 import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.item.Items;
 import net.minecraft.loot.condition.LootCondition;
 import net.minecraft.loot.condition.RandomChanceLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
@@ -29,14 +30,13 @@ public class SoulsAndSorcery implements ModInitializer {
 		ModSounds.register();
 		ModBlocks.register();
 
-		UniformLootNumberProvider uniformLootNumberProvider = UniformLootNumberProvider.create(0, 1);
-		LootCondition lootCondition = RandomChanceLootCondition.builder(60).build();
+
 		LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
 			if (NETHER_FORTRESS_LOOT.equals(id)) {
 				FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
-						.rolls(uniformLootNumberProvider)
-						.withCondition(lootCondition)
-						.withEntry(ItemEntry.builder(ModItems.PETRIFIED_ARTIFACT).build());
+						.rolls(UniformLootNumberProvider.create(1, 1))
+						.withEntry(ItemEntry.builder(ModItems.PETRIFIED_ARTIFACT).weight(1).build())
+						.withEntry(ItemEntry.builder(Items.GOLD_INGOT).weight(2).build());
 
 				supplier.withPool(poolBuilder.build());
 			}

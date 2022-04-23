@@ -4,12 +4,9 @@ import com.exdrill.soulsandsorcery.SoulsAndSorcery;
 import com.exdrill.soulsandsorcery.misc.PlayerEntityInterface;
 import com.exdrill.soulsandsorcery.registry.ModItems;
 import com.exdrill.soulsandsorcery.registry.ModSounds;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
@@ -134,5 +131,6 @@ public abstract class LivingEntityMixin implements PlayerEntityInterface {
             }
 
         }
+
     }
 }
