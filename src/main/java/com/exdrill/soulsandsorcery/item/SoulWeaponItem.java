@@ -1,11 +1,11 @@
 package com.exdrill.soulsandsorcery.item;
 
 import com.exdrill.soulsandsorcery.SoulsAndSorcery;
-import com.exdrill.soulsandsorcery.misc.PlayerEntityInterface;
-import com.exdrill.soulsandsorcery.registry.ModSounds;
+import com.exdrill.soulsandsorcery.access.LivingEntityAccess;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -14,10 +14,8 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.NbtText;
+import net.minecraft.network.MessageType;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
@@ -65,6 +63,9 @@ public class SoulWeaponItem extends Item {
 
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
+        if (world.isClient) {
+            MinecraftClient.getInstance().inGameHud.addChatMessage(MessageType.GAME_INFO, Text.of(((LivingEntityAccess) user).getSouls() + " Souls"), UUID.randomUUID());
+        }
         user.setCurrentHand(hand);
         return TypedActionResult.consume(itemStack);
     }

@@ -1,12 +1,17 @@
 package com.exdrill.soulsandsorcery.mixin;
 
 import com.exdrill.soulsandsorcery.SoulsAndSorcery;
-import com.exdrill.soulsandsorcery.misc.PlayerEntityInterface;
+import com.exdrill.soulsandsorcery.access.LivingEntityAccess;
 import com.exdrill.soulsandsorcery.registry.ModItems;
 import com.exdrill.soulsandsorcery.registry.ModSounds;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
@@ -23,46 +28,70 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin implements PlayerEntityInterface {
-    public int soulsAmount = 0;
+public abstract class LivingEntityMixin extends Entity implements LivingEntityAccess {
+
+    public int soulsAmount = this.getSouls();
     public boolean canSoulHarvest = false;
+    private static final TrackedData<Integer> SOULS_AMOUNT = DataTracker.registerData(LivingEntity.class, TrackedDataHandlerRegistry.INTEGER);
+
+    public LivingEntityMixin(EntityType<?> type, World world) {
+        super(type, world);
+    }
+
+    @Inject(
+            require = 1,
+            method = "initDataTracker",
+            at = @At("HEAD")
+    )
+    public void onInitDataTracker(CallbackInfo ci) {
+        getDataTracker().startTracking(SOULS_AMOUNT, 0);
+    }
 
     // Tick
     @Inject(method = "tick", at = @At("HEAD"))
     public void tick(CallbackInfo ci) {
-        if (this.soulsAmount > 10) {
-            this.soulsAmount = 10;
+        if (this.getSouls() > 10) {
+            this.setSouls(10);
         }
 
-        if (this.soulsAmount < 0) {
-            this.soulsAmount = 0;
+        if (this.getSouls() < 0) {
+            this.setSouls(0);
         }
     }
 
     // Soul Methods
     @Override
     public void addSouls(int soulCount) {
-        this.soulsAmount += soulCount;
+        int i = this.getSouls() + soulCount;
+        this.dataTracker.set(SOULS_AMOUNT, i);
     }
 
     @Override
     public int getSouls() {
-        return this.soulsAmount;
+        return this.dataTracker.get(SOULS_AMOUNT);
+    }
+
+    @Override
+    public void setSouls(int soulCount) {
+        this.dataTracker.set(SOULS_AMOUNT, soulCount);
     }
 
     // Nbt Data
+    @Inject(method = "writeCustomDataToNbt", at = @At("HEAD"))
+    public void writeCustomDataToNbt(NbtCompound nbt, CallbackInfo ci) {
+        nbt.putInt("SoulsAmount", this.getSouls());
+        nbt.putBoolean("IsSoulHarvester", this.canSoulHarvest);
+    }
+
+
     @Inject(method = "readCustomDataFromNbt", at = @At("HEAD"))
     public void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo ci) {
-        this.soulsAmount = nbt.getInt("SoulsAmount");
+        this.setSouls(nbt.getInt("SoulsAmount"));
         this.canSoulHarvest = nbt.getBoolean("IsSoulHarvester");
 
     }
 
-    @Inject(method = "writeCustomDataToNbt", at = @At("HEAD"))
-    public void writeCustomDataToNbt(NbtCompound nbt, CallbackInfo ci) {
-        nbt.putInt("SoulsAmount", this.soulsAmount);
-        nbt.putBoolean("IsSoulHarvester", this.canSoulHarvest);
-    }
+
 
     @Override
     public boolean canSoulHarvest() {
@@ -88,18 +117,18 @@ public abstract class LivingEntityMixin implements PlayerEntityInterface {
     public void onKilledBy(LivingEntity adversary, CallbackInfo ci) {
         World world = ((LivingEntity)(Object)this).world;
         if (!world.isClient && adversary != null) {
-            if (((PlayerEntityInterface) adversary).canSoulHarvest()) {
+            if (((LivingEntityAccess) adversary).canSoulHarvest()) {
                 if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == 0) {
-                    ((PlayerEntityInterface) adversary).addSouls(1);
+                    ((LivingEntityAccess) adversary).addSouls(1);
                 }
                 if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == 1) {
-                    ((PlayerEntityInterface) adversary).addSouls(2);
+                    ((LivingEntityAccess) adversary).addSouls(2);
                 }
                 if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == 2) {
-                    ((PlayerEntityInterface) adversary).addSouls(3);
+                    ((LivingEntityAccess) adversary).addSouls(3);
                 }
                 if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == 3) {
-                    ((PlayerEntityInterface) adversary).addSouls(4);
+                    ((LivingEntityAccess) adversary).addSouls(4);
                 }
 
                 double x = entity.getX();
@@ -117,7 +146,7 @@ public abstract class LivingEntityMixin implements PlayerEntityInterface {
 
     @Inject(method = "drop", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;shouldDropLoot()Z"))
     private void drop(DamageSource source, CallbackInfo ci) {
-        if (((PlayerEntityInterface) entity).canSoulHarvest()) {
+        if (((LivingEntityAccess) entity).canSoulHarvest()) {
             ItemStack stack = new ItemStack(ModItems.PETRIFIED_ARTIFACT);
             entity.dropStack(stack);
             System.out.println("Dropped petrified artifact");

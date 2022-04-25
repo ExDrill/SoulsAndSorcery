@@ -1,6 +1,6 @@
-package com.exdrill.soulsandsorcery.misc;
+package com.exdrill.soulsandsorcery.access;
 
-public interface PlayerEntityInterface {
+public interface LivingEntityAccess {
     void addSouls(int soulCount);
 
     int getSouls();
@@ -8,5 +8,7 @@ public interface PlayerEntityInterface {
     boolean canSoulHarvest();
 
     void setSoulHarvester(boolean soulHarvester);
+
+    void setSouls(int soulCount);
 
 }
