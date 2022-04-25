@@ -38,11 +38,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityAc
         super(type, world);
     }
 
-    @Inject(
-            require = 1,
-            method = "initDataTracker",
-            at = @At("HEAD")
-    )
+    @Inject(require = 1, method = "initDataTracker", at = @At("HEAD"))
     public void onInitDataTracker(CallbackInfo ci) {
         getDataTracker().startTracking(SOULS_AMOUNT, 0);
     }
@@ -118,7 +114,8 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityAc
         World world = ((LivingEntity)(Object)this).world;
         if (!world.isClient && adversary != null) {
             if (((LivingEntityAccess) adversary).canSoulHarvest()) {
-                if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == 0) {
+
+                /*if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == 0) {
                     ((LivingEntityAccess) adversary).addSouls(1);
                 }
                 if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == 1) {
@@ -129,7 +126,14 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityAc
                 }
                 if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == 3) {
                     ((LivingEntityAccess) adversary).addSouls(4);
+                }*/
+
+                int getSoulGathering = (int) adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING);
+                if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == getSoulGathering) {
+                    ((LivingEntityAccess) adversary).addSouls(getSoulGathering + 1);
                 }
+
+
 
                 double x = entity.getX();
                 double y = entity.getY();
@@ -141,7 +145,6 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityAc
                 System.out.println("Entity killed by " + adversary.getName().getString() + " with a soul gathering level of " + adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING));
             }
         }
-
     }
 
     @Inject(method = "drop", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;shouldDropLoot()Z"))

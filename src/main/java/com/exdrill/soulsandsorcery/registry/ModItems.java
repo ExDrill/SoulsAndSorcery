@@ -15,7 +15,7 @@ public class ModItems {
 
     // Item Settings
     public static final SoulWeaponItem HAUNTED_SICKLE = new SoulWeaponItem(6, -3, 1, new Item.Settings().group(ItemGroup.COMBAT).maxCount(1).maxDamage(1024));
-    public static final PetrifiedArtifactItem PETRIFIED_ARTIFACT = new PetrifiedArtifactItem(new Item.Settings().group(ItemGroup.TOOLS).maxCount(1).rarity(Rarity.UNCOMMON).fireproof());
+    public static final PetrifiedArtifactItem PETRIFIED_ARTIFACT = new PetrifiedArtifactItem(new Item.Settings().group(ItemGroup.MISC).maxCount(1).rarity(Rarity.UNCOMMON).fireproof());
     public static final BlockItem PETRIFIED_GLASS = new BlockItem(ModBlocks.PETRIFIED_GLASS, new Item.Settings().group(ItemGroup.BUILDING_BLOCKS));
 
     // Item Registry
