@@ -30,9 +30,8 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements LivingEntityAccess {
 
-    public int soulsAmount = this.getSouls();
-    public boolean canSoulHarvest = false;
     private static final TrackedData<Integer> SOULS_AMOUNT = DataTracker.registerData(LivingEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<Boolean> CAN_SOUL_HARVEST = DataTracker.registerData(LivingEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
@@ -41,24 +40,13 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityAc
     @Inject(require = 1, method = "initDataTracker", at = @At("HEAD"))
     public void onInitDataTracker(CallbackInfo ci) {
         getDataTracker().startTracking(SOULS_AMOUNT, 0);
-    }
-
-    // Tick
-    @Inject(method = "tick", at = @At("HEAD"))
-    public void tick(CallbackInfo ci) {
-        if (this.getSouls() > 10) {
-            this.setSouls(10);
-        }
-
-        if (this.getSouls() < 0) {
-            this.setSouls(0);
-        }
+        getDataTracker().startTracking(CAN_SOUL_HARVEST, false);
     }
 
     // Soul Methods
     @Override
     public void addSouls(int soulCount) {
-        int i = this.getSouls() + soulCount;
+        int i = Math.min(this.getSouls() + soulCount, 20);
         this.dataTracker.set(SOULS_AMOUNT, i);
     }
 
@@ -68,35 +56,33 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityAc
     }
 
     @Override
+    public boolean canSoulHarvest() {
+        return this.dataTracker.get(CAN_SOUL_HARVEST);
+    }
+
+    @Override
     public void setSouls(int soulCount) {
-        this.dataTracker.set(SOULS_AMOUNT, soulCount);
+        int i = Math.min(soulCount, 20);
+        this.dataTracker.set(SOULS_AMOUNT, i);
+    }
+
+    @Override
+    public void setSoulHarvester(boolean canSoulHarvest) {
+        this.dataTracker.set(CAN_SOUL_HARVEST, canSoulHarvest);
     }
 
     // Nbt Data
     @Inject(method = "writeCustomDataToNbt", at = @At("HEAD"))
     public void writeCustomDataToNbt(NbtCompound nbt, CallbackInfo ci) {
         nbt.putInt("SoulsAmount", this.getSouls());
-        nbt.putBoolean("IsSoulHarvester", this.canSoulHarvest);
+        nbt.putBoolean("canSoulHarvest", this.canSoulHarvest());
     }
-
 
     @Inject(method = "readCustomDataFromNbt", at = @At("HEAD"))
     public void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo ci) {
         this.setSouls(nbt.getInt("SoulsAmount"));
-        this.canSoulHarvest = nbt.getBoolean("IsSoulHarvester");
+        this.setSoulHarvester(nbt.getBoolean("canSoulHarvest"));
 
-    }
-
-
-
-    @Override
-    public boolean canSoulHarvest() {
-        return this.canSoulHarvest;
-    }
-
-    @Override
-    public void setSoulHarvester(boolean canSoulHarvest) {
-        this.canSoulHarvest = canSoulHarvest;
     }
 
 
@@ -115,25 +101,10 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityAc
         if (!world.isClient && adversary != null) {
             if (((LivingEntityAccess) adversary).canSoulHarvest()) {
 
-                /*if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == 0) {
-                    ((LivingEntityAccess) adversary).addSouls(1);
-                }
-                if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == 1) {
-                    ((LivingEntityAccess) adversary).addSouls(2);
-                }
-                if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == 2) {
-                    ((LivingEntityAccess) adversary).addSouls(3);
-                }
-                if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == 3) {
-                    ((LivingEntityAccess) adversary).addSouls(4);
-                }*/
-
                 int getSoulGathering = (int) adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING);
                 if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == getSoulGathering) {
                     ((LivingEntityAccess) adversary).addSouls(getSoulGathering + 1);
                 }
-
-
 
                 double x = entity.getX();
                 double y = entity.getY();
