@@ -35,7 +35,6 @@ public class SoulWeaponItem extends Item {
         builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", attackSpeed, EntityAttributeModifier.Operation.ADDITION));
         builder.put(SoulsAndSorcery.GENERIC_SOUL_GATHERING, new EntityAttributeModifier(SOUL_GATHERING_MODIFIER_ID, "Weapon modifier", soulGathering, EntityAttributeModifier.Operation.ADDITION));
         this.attributeModifiers = builder.build();
-
     }
 
 
@@ -59,29 +58,6 @@ public class SoulWeaponItem extends Item {
 
     public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
         return slot == EquipmentSlot.MAINHAND ? this.attributeModifiers : super.getAttributeModifiers(slot);
-    }
-
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemStack = user.getStackInHand(hand);
-        if (world.isClient) {
-            MinecraftClient.getInstance().inGameHud.addChatMessage(MessageType.GAME_INFO, Text.of(((LivingEntityAccess) user).getSouls() + " Souls"), UUID.randomUUID());
-        }
-        user.setCurrentHand(hand);
-        return TypedActionResult.consume(itemStack);
-    }
-
-    public UseAction getUseAction(ItemStack stack) {
-        return UseAction.NONE;
-    }
-
-    public int getMaxUseTime(ItemStack stack) {
-        return 72000;
-    }
-
-
-    @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        super.onStoppedUsing(stack, world, user, remainingUseTicks);
     }
 }
 

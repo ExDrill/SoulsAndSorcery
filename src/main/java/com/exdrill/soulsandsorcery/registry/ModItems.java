@@ -1,6 +1,7 @@
 package com.exdrill.soulsandsorcery.registry;
 
 import com.exdrill.soulsandsorcery.SoulsAndSorcery;
+import com.exdrill.soulsandsorcery.item.AbstractArtifactItem;
 import com.exdrill.soulsandsorcery.item.PetrifiedArtifactItem;
 import com.exdrill.soulsandsorcery.item.SoulWeaponItem;
 import net.minecraft.item.BlockItem;
@@ -17,11 +18,13 @@ public class ModItems {
     public static final SoulWeaponItem HAUNTED_SICKLE = new SoulWeaponItem(6, -3, 1, new Item.Settings().group(ItemGroup.COMBAT).maxCount(1).maxDamage(1024));
     public static final PetrifiedArtifactItem PETRIFIED_ARTIFACT = new PetrifiedArtifactItem(new Item.Settings().group(ItemGroup.MISC).maxCount(1).rarity(Rarity.UNCOMMON).fireproof());
     public static final BlockItem PETRIFIED_GLASS = new BlockItem(ModBlocks.PETRIFIED_GLASS, new Item.Settings().group(ItemGroup.BUILDING_BLOCKS));
+    public static final AbstractArtifactItem EVOCATION_TOME = new AbstractArtifactItem(1, new Item.Settings().group(ItemGroup.COMBAT).maxCount(1).maxDamage(512));
 
     // Item Registry
     public static void register() {
         Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "haunted_sickle"), HAUNTED_SICKLE);
         Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "petrified_artifact"), PETRIFIED_ARTIFACT);
         Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "petrified_glass"), PETRIFIED_GLASS);
+        Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "evocation_tome"), EVOCATION_TOME);
     }
 }

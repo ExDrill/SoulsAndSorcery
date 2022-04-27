@@ -37,6 +37,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityAc
         super(type, world);
     }
 
+    // Data Tracker
     @Inject(require = 1, method = "initDataTracker", at = @At("HEAD"))
     public void onInitDataTracker(CallbackInfo ci) {
         getDataTracker().startTracking(SOULS_AMOUNT, 0);
@@ -56,14 +57,14 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityAc
     }
 
     @Override
-    public boolean canSoulHarvest() {
-        return this.dataTracker.get(CAN_SOUL_HARVEST);
-    }
-
-    @Override
     public void setSouls(int soulCount) {
         int i = Math.min(soulCount, 20);
         this.dataTracker.set(SOULS_AMOUNT, i);
+    }
+
+    @Override
+    public boolean canSoulHarvest() {
+        return this.dataTracker.get(CAN_SOUL_HARVEST);
     }
 
     @Override
@@ -89,12 +90,14 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityAc
     LivingEntity entity = (LivingEntity)(Object)this;
 
 
+    // Add Soul Gathering Attribute
     @Inject(method = "createLivingAttributes", at = @At(value = "RETURN"), locals = LocalCapture.CAPTURE_FAILHARD)
     private static void addSoulGathering(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
         cir.getReturnValue()
                 .add(SoulsAndSorcery.GENERIC_SOUL_GATHERING);
     }
 
+   // Soul Harvesting
     @Inject(method = "onKilledBy", at = @At(value = "HEAD"))
     public void onKilledBy(LivingEntity adversary, CallbackInfo ci) {
         World world = ((LivingEntity)(Object)this).world;
@@ -118,6 +121,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityAc
         }
     }
 
+    // Drop Petrified Soul on Death
     @Inject(method = "drop", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;shouldDropLoot()Z"))
     private void drop(DamageSource source, CallbackInfo ci) {
         if (((LivingEntityAccess) entity).canSoulHarvest()) {
@@ -132,8 +136,6 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityAc
             if (!world.isClient) {
                 world.playSound(null, pos, ModSounds.ITEM_PETRIFIED_ARTIFACT_ESCAPE_EVENT, SoundCategory.PLAYERS, 50.0F, 1.0F);
             }
-
         }
-
     }
 }

@@ -12,7 +12,9 @@
   "contact": {},
   "license": "CC0-1.0",
   "icon": "assets/soulsandsorcery/icon.png",
-
+  "contributors": [
+    "OuterCloudStudio"
+  ],
   "environment": "*",
   "entrypoints": {
     "main": [
