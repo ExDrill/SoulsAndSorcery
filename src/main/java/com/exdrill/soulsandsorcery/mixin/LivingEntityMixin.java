@@ -1,7 +1,7 @@
 package com.exdrill.soulsandsorcery.mixin;
 
 import com.exdrill.soulsandsorcery.SoulsAndSorcery;
-import com.exdrill.soulsandsorcery.access.LivingEntityAccess;
+import com.exdrill.soulsandsorcery.access.SoulComponents;
 import com.exdrill.soulsandsorcery.registry.ModItems;
 import com.exdrill.soulsandsorcery.registry.ModSounds;
 import net.minecraft.entity.Entity;
@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin extends Entity implements LivingEntityAccess {
+public abstract class LivingEntityMixin extends Entity implements SoulComponents {
 
     private static final TrackedData<Integer> SOULS_AMOUNT = DataTracker.registerData(LivingEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> CAN_SOUL_HARVEST = DataTracker.registerData(LivingEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -102,11 +102,11 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityAc
     public void onKilledBy(LivingEntity adversary, CallbackInfo ci) {
         World world = ((LivingEntity)(Object)this).world;
         if (!world.isClient && adversary != null) {
-            if (((LivingEntityAccess) adversary).canSoulHarvest()) {
+            if (((SoulComponents) adversary).canSoulHarvest()) {
 
                 int getSoulGathering = (int) adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING);
                 if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == getSoulGathering) {
-                    ((LivingEntityAccess) adversary).addSouls(getSoulGathering + 1);
+                    ((SoulComponents) adversary).addSouls(getSoulGathering + 1);
                 }
 
                 double x = entity.getX();
@@ -124,7 +124,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityAc
     // Drop Petrified Soul on Death
     @Inject(method = "drop", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;shouldDropLoot()Z"))
     private void drop(DamageSource source, CallbackInfo ci) {
-        if (((LivingEntityAccess) entity).canSoulHarvest()) {
+        if (((SoulComponents) entity).canSoulHarvest()) {
             ItemStack stack = new ItemStack(ModItems.PETRIFIED_ARTIFACT);
             entity.dropStack(stack);
             System.out.println("Dropped petrified artifact");
