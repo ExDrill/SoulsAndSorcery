@@ -40,11 +40,6 @@ public class AbstractArtifactItem extends Item {
 
 
     @Override
-    public boolean isUsedOnRelease(ItemStack stack) {
-        return true;
-    }
-
-    @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         tooltip.add(new LiteralText(""));
         tooltip.add(new TranslatableText("tooltip.soulsandsorcery.when_used").formatted(Formatting.GRAY));
