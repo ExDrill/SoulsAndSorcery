@@ -35,7 +35,8 @@ public class AbstractArtifactItem extends Item {
             return TypedActionResult.fail(user.getStackInHand(hand));
         }
     }
-    */
+
+     */
 
 
     @Override
