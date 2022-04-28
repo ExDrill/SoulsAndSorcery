@@ -51,22 +51,30 @@ public class EvocationTomeItem extends AbstractArtifactItem {
         Hand hand = Hand.MAIN_HAND;
         double d = Math.min(user.getY(), user.getY());
         double e = Math.max(user.getY(), user.getY()) + 1.0D;
-        float f = (float)MathHelper.atan2(user.getZ() - user.getYaw(), user.getX() - user.getYaw());
+        float f = (float) MathHelper.atan2(user.getZ() - user.getHeadYaw(), user.getX() - user.getHeadYaw());
         int i;
-        if (((SoulComponents) user).getSouls() >= soulUsage) {
+        float g;
+        if (((SoulComponents) user).getSouls() >= soulUsage && user.isSneaking()) {
             ItemStack itemStack = user.getStackInHand(hand);
             ((SoulComponents) user).addSouls(soulUsage * -1);
-            for(i = 0; i < 8; ++i) {
-                double h = 1.25D * (double)(i + 1);
-                int j = 1 * i;
-                this.conjureFangs(user.getX() + (double)MathHelper.cos(f) * h, user.getZ() + (double)MathHelper.sin(f) * h, d, e, f, j, user);
-            }
-        } else {
-            if (world.isClient) {
-                MinecraftClient.getInstance().inGameHud.addChatMessage(MessageType.GAME_INFO, new TranslatableText("gameplay.not_enough_souls"), UUID.randomUUID());
+            for (i = 0; i < 8; ++i) {
+                g = f + (float) i * 3.1415927F * 2.0F / 8.0F + 1.2566371F;
+                this.conjureFangs(user.getX() + (double) MathHelper.cos(g) * 2.5D, user.getZ() + (double) MathHelper.sin(g) * 2.5D, d, e, g, 3, user);
+              }
+            } else {
+                if (((SoulComponents) user).getSouls() >= soulUsage) {
+                    for (i = 0; i < 8; ++i) {
+                        double h = 1.25D * (double)(i + 1);
+                        int j = 1 * i;
+                        this.conjureFangs(user.getX() + (double)MathHelper.cos(f) * h, user.getZ() + (double)MathHelper.sin(f) * h, d, e, f, j, user);
+                    }
+                } else {
+                    if (world.isClient) {
+                        MinecraftClient.getInstance().inGameHud.addChatMessage(MessageType.GAME_INFO, new TranslatableText("gameplay.not_enough_souls"), UUID.randomUUID());
+                    }
+                }
             }
         }
-    }
     private void conjureFangs(double x, double z, double maxY, double y, float yaw, int warmup, LivingEntity user) {
         BlockPos blockPos = new BlockPos(x, y, z);
         boolean bl = false;
