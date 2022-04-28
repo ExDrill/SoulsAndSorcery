@@ -6,6 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.mob.EvokerEntity;
 import net.minecraft.entity.mob.EvokerFangsEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -50,7 +51,7 @@ public class EvocationTomeItem extends AbstractArtifactItem {
         Hand hand = Hand.MAIN_HAND;
         double d = Math.min(user.getY(), user.getY());
         double e = Math.max(user.getY(), user.getY()) + 1.0D;
-        float f = (float)MathHelper.atan2(user.getZ() - user.getZ(), user.getX() - user.getX());
+        float f = (float)MathHelper.atan2(user.getZ() - user.getYaw(), user.getX() - user.getYaw());
         int i;
         if (((SoulComponents) user).getSouls() >= soulUsage) {
             ItemStack itemStack = user.getStackInHand(hand);
@@ -60,9 +61,6 @@ public class EvocationTomeItem extends AbstractArtifactItem {
                 int j = 1 * i;
                 this.conjureFangs(user.getX() + (double)MathHelper.cos(f) * h, user.getZ() + (double)MathHelper.sin(f) * h, d, e, f, j, user);
             }
-
-
-
         } else {
             if (world.isClient) {
                 MinecraftClient.getInstance().inGameHud.addChatMessage(MessageType.GAME_INFO, new TranslatableText("gameplay.not_enough_souls"), UUID.randomUUID());
@@ -96,6 +94,5 @@ public class EvocationTomeItem extends AbstractArtifactItem {
         if (bl) {
             user.world.spawnEntity(new EvokerFangsEntity(user.world, x, (double)blockPos.getY() + d, z, yaw, warmup, user));
         }
-
     }
 }
