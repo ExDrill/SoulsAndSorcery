@@ -78,7 +78,7 @@ public class WindcallingHornItem extends AbstractArtifactItem {
         double d = entity.getX() - user.getX();
         double e = entity.getZ() - user.getZ();
         double f = Math.max(d * d + e * e, 0.001D);
-        entity.addVelocity(d / f * 2.0D, 0.3D, e / f * 2.0D);
+        entity.addVelocity(d / f * 3.15D, 0.4D, e / f * 3.15D);
         entity.velocityModified = true;
     }
 }
