@@ -1,12 +1,9 @@
 package com.exdrill.soulsandsorcery.item;
 
 import com.exdrill.soulsandsorcery.access.SoulComponents;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.EvokerEntity;
 import net.minecraft.entity.mob.EvokerFangsEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -39,7 +36,7 @@ public class EvocationTomeItem extends AbstractArtifactItem {
         ItemStack itemStack = user.getStackInHand(hand);
         user.setCurrentHand(hand);
         BlockPos pos = user.getBlockPos();
-        if (((SoulComponents) user).getSouls() >= soulUsage) {
+        if (((SoulComponents) user).getSouls() >= soulUsage || user.getAbilities().creativeMode) {
             world.playSound(user, pos, SoundEvents.ENTITY_EVOKER_CAST_SPELL, SoundCategory.PLAYERS, 100F, 1F);
         }
         return TypedActionResult.consume(itemStack);
@@ -64,7 +61,7 @@ public class EvocationTomeItem extends AbstractArtifactItem {
         float f = (float) MathHelper.atan2(user.getYaw() - user.getZ(), user.getYaw() - user.getX());
 
         // Functions
-        if (user.getItemUseTime() > 5 && ((SoulComponents) user).getSouls() >= soulUsage) {
+        if (user.getItemUseTime() > 5 && ((SoulComponents) user).getSouls() >= soulUsage || user instanceof PlayerEntity player && player.getAbilities().creativeMode) {
             // Circle of Fangs
             if (user.isSneaking()) {
                 for (int i = 0; i < 8; ++i) {
@@ -85,7 +82,9 @@ public class EvocationTomeItem extends AbstractArtifactItem {
             stack.damage(1, user, (p_220043_1_) -> p_220043_1_.sendToolBreakStatus(hand));
 
             // Remove Souls
-            ((SoulComponents) user).addSouls(-soulUsage);
+            if (user instanceof PlayerEntity player && !player.getAbilities().creativeMode) {
+                ((SoulComponents) user).addSouls(-soulUsage);
+            }
 
         } else if (world.isClient && user.getItemUseTime() > 5) {
             MinecraftClient.getInstance().inGameHud.addChatMessage(MessageType.GAME_INFO, new TranslatableText("gameplay.not_enough_souls"), UUID.randomUUID());

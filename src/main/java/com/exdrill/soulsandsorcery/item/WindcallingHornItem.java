@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.MessageType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -32,9 +31,9 @@ public class WindcallingHornItem extends AbstractArtifactItem {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (((SoulComponents) user).getSouls() >= soulUsage) {
+        if (((SoulComponents) user).getSouls() >= soulUsage || user.getAbilities().creativeMode) {
             BlockPos pos = user.getBlockPos();
-            ((SoulComponents) user).addSouls(-soulUsage);
+
             world.playSound(user, pos, ModSounds.ITEM_WINDCALLING_HORN_BLOW_EVENT, SoundCategory.PLAYERS, 50.0F, 1.0F);
             // This should affect the entity that is using it
 
@@ -55,6 +54,9 @@ public class WindcallingHornItem extends AbstractArtifactItem {
 
             user.getItemCooldownManager().set(this, 200);
             ItemStack stack = user.getStackInHand(hand);
+            if (!user.getAbilities().creativeMode) {
+                ((SoulComponents) user).addSouls(-soulUsage);
+            }
             stack.damage(1, user, (p_220043_1_) -> p_220043_1_.sendToolBreakStatus(hand));
             return TypedActionResult.success(user.getStackInHand(hand));
         } else {
@@ -62,7 +64,6 @@ public class WindcallingHornItem extends AbstractArtifactItem {
                 MinecraftClient.getInstance().inGameHud.addChatMessage(MessageType.GAME_INFO, new TranslatableText("gameplay.not_enough_souls"), UUID.randomUUID());
             }
             return TypedActionResult.fail(user.getStackInHand(hand));
-
         }
     }
 
