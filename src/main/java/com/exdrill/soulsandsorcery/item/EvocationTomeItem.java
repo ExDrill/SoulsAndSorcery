@@ -28,6 +28,8 @@ import java.util.UUID;
 public class EvocationTomeItem extends AbstractArtifactItem {
     private final int soulUsage;
 
+    private final float DegToRad = 0.01745329252F;
+
     public EvocationTomeItem(int soulUsage, Settings settings) {
         super(soulUsage, settings);
         this.soulUsage = soulUsage;
@@ -55,34 +57,28 @@ public class EvocationTomeItem extends AbstractArtifactItem {
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         Hand hand = Hand.MAIN_HAND;
+
         double d = Math.min(user.getY(), user.getY()); // Max Y
         double e = Math.max(user.getY(), user.getY()) + 1.0D; // Y
+
         float f = (float) MathHelper.atan2(user.getYaw() - user.getZ(), user.getYaw() - user.getX());
-
-
-        float x = (float) user.offsetX(user.getYaw());
-        float z = (float) user.offsetZ(user.getYaw());
-        float xz = (float) MathHelper.atan2(Math.cos(z), Math.sin(x));
-
-        int i;
-        float g;
 
         // Functions
         if (user.getItemUseTime() > 5 && ((SoulComponents) user).getSouls() >= soulUsage) {
             // Circle of Fangs
             if (user.isSneaking()) {
-                for (i = 0; i < 8; ++i) {
-                    g = f + (float) i * 3.1415927F * 2.0F / 8.0F + 1.2566371F;
+                for (int i = 0; i < 8; ++i) {
+                    float g = f + (float) i * 3.1415927F * 2.0F / 8.0F + 1.2566371F;
                     this.conjureFangs(user.getX() + (double) MathHelper.cos(g) * 2.5D, user.getZ() + (double) MathHelper.sin(g) * 2.5D, d, e, g, 3, user);
 
                 }
             // Line of Fangs
             } else {
-                for (i = 0; i < 8; ++i) {
-                    double h = 1.25D * (double) (i + 1);
-                    int j = 1 * i;
-                    //this.conjureFangs(user.getX() + (double) MathHelper.cos(f) * h, user.getZ() + (double) MathHelper.sin(f) * h, d, e, f, j, user);
-                    this.conjureFangs(user.getX() + (double) xz * h, user.getZ() + (double) xz * h, d, e, f, j, user);
+                for (int i = 0; i < 8; ++i) {
+                    float offsetX = MathHelper.sin(-user.getYaw() * DegToRad);
+                    float offsetZ = MathHelper.cos(user.getYaw() * DegToRad);
+
+                    this.conjureFangs(user.getX() + offsetX * (i + 1), user.getZ() + offsetZ * (i + 1), d, e, (user.getYaw() + 90) * DegToRad, i, user);
                 }
             }
             // Remove 1 Durability
