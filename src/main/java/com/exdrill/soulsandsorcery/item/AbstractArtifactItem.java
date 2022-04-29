@@ -48,6 +48,7 @@ public class AbstractArtifactItem extends Item {
         } else {
             tooltip.add(new LiteralText(" ").append(new LiteralText(soulUsage * -1 + " ")).append(new TranslatableText("tooltip.soulsandsorcery.soul_usage.plural")).formatted(Formatting.AQUA));
         }
+        tooltip.add(new LiteralText(""));
         super.appendTooltip(stack, world, tooltip, context);
     }
 }

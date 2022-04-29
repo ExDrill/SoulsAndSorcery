@@ -53,7 +53,7 @@ public class EvocationTomeItem extends AbstractArtifactItem {
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         Hand hand = Hand.MAIN_HAND;
 
-        double d = Math.min(user.getY(), user.getY()); // Max Y
+        double d = Math.min(user.getY(), user.getY() - 1.0D); // Max Y
         double e = Math.max(user.getY(), user.getY()) + 1.0D; // Y
 
         float f = (float) MathHelper.atan2(user.getYaw() - user.getZ(), user.getYaw() - user.getX());
