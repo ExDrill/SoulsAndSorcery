@@ -57,22 +57,32 @@ public class EvocationTomeItem extends AbstractArtifactItem {
         Hand hand = Hand.MAIN_HAND;
         double d = Math.min(user.getY(), user.getY()); // Max Y
         double e = Math.max(user.getY(), user.getY()) + 1.0D; // Y
-        float f = (float) MathHelper.atan2(user.getZ() - user.getYaw(), user.getX() - user.getYaw());
+        float f = (float) MathHelper.atan2(user.getYaw() - user.getZ(), user.getYaw() - user.getX());
+
+
+        float x = (float) user.offsetX(user.getYaw());
+        float z = (float) user.offsetZ(user.getYaw());
+        float xz = (float) MathHelper.atan2(Math.cos(z), Math.sin(x));
+
         int i;
         float g;
 
         // Functions
         if (user.getItemUseTime() > 5 && ((SoulComponents) user).getSouls() >= soulUsage) {
+            // Circle of Fangs
             if (user.isSneaking()) {
                 for (i = 0; i < 8; ++i) {
                     g = f + (float) i * 3.1415927F * 2.0F / 8.0F + 1.2566371F;
                     this.conjureFangs(user.getX() + (double) MathHelper.cos(g) * 2.5D, user.getZ() + (double) MathHelper.sin(g) * 2.5D, d, e, g, 3, user);
+
                 }
+            // Line of Fangs
             } else {
                 for (i = 0; i < 8; ++i) {
                     double h = 1.25D * (double) (i + 1);
                     int j = 1 * i;
-                    this.conjureFangs(user.getX() + (double) MathHelper.cos(f) * h, user.getZ() + (double) MathHelper.sin(f) * h, d, e, f, j, user);
+                    //this.conjureFangs(user.getX() + (double) MathHelper.cos(f) * h, user.getZ() + (double) MathHelper.sin(f) * h, d, e, f, j, user);
+                    this.conjureFangs(user.getX() + (double) xz * h, user.getZ() + (double) xz * h, d, e, f, j, user);
                 }
             }
             // Remove 1 Durability
