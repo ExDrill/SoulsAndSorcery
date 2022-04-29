@@ -21,6 +21,7 @@ public class SoulsAndSorcery implements ModInitializer {
 	public static final EntityAttribute GENERIC_SOUL_GATHERING = new ClampedEntityAttribute("attribute.name.generic.soul_gathering", 0.0D, 0.0D, 3.0D).setTracked(true);
 
 	private static final Identifier NETHER_FORTRESS_LOOT = new Identifier("minecraft", "chests/nether_bridge");
+	private static final Identifier WOODLAND_MANSION_CHEST = new Identifier("minecraft", "chests/woodland_mansion");
 
 	@Override
 	public void onInitialize() {
@@ -37,6 +38,15 @@ public class SoulsAndSorcery implements ModInitializer {
 						.rolls(UniformLootNumberProvider.create(1, 1))
 						.withEntry(ItemEntry.builder(ModItems.PETRIFIED_ARTIFACT).weight(1).build())
 						.withEntry(ItemEntry.builder(Items.GOLD_INGOT).weight(2).build());
+
+				supplier.withPool(poolBuilder.build());
+			}
+			if (WOODLAND_MANSION_CHEST.equals(id)) {
+				FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
+						.rolls(UniformLootNumberProvider.create(1, 1))
+						.withEntry(ItemEntry.builder(ModItems.OBFUSCATED_NOTES).weight(1).build())
+						.withEntry(ItemEntry.builder(Items.BOOK).weight(2).build());
+
 
 				supplier.withPool(poolBuilder.build());
 			}

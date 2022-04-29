@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "C  ",
+    " DX",
+    " XX"
+  ],
+  "key": {
+    "X": {
+      "item": "soulsandsorcery:obfuscated_notes"
+    },
+    "C": {
+      "item": "minecraft:leather"
+    },
+    "D": {
+      "item": "soulsandsorcery:soul_shard"
+    }
+  },
+  "result": {
+    "item": "soulsandsorcery:evocation_tome",
+    "count": 1
+  }
+}

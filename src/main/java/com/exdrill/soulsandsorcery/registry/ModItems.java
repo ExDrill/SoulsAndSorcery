@@ -21,6 +21,8 @@ public class ModItems {
     public static final BlockItem PETRIFIED_GLASS = new BlockItem(ModBlocks.PETRIFIED_GLASS, new Item.Settings().group(ItemGroup.BUILDING_BLOCKS));
     public static final EvocationTomeItem EVOCATION_TOME = new EvocationTomeItem(2, new Item.Settings().group(ItemGroup.COMBAT).maxCount(1).maxDamage(318).rarity(Rarity.RARE));
     public static final WindcallingHornItem WINDCALLING_HORN = new WindcallingHornItem(1, new Item.Settings().group(ItemGroup.COMBAT).maxCount(1).maxDamage(204).rarity(Rarity.RARE));
+    public static final Item OBFUSCATED_NOTES = new Item(new Item.Settings().group(ItemGroup.MISC));
+    public static final Item SOUL_SHARD = new Item(new Item.Settings().group(ItemGroup.MISC));
     // Item Registry
     public static void register() {
         Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "haunted_sickle"), HAUNTED_SICKLE);
@@ -28,5 +30,7 @@ public class ModItems {
         Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "petrified_glass"), PETRIFIED_GLASS);
         Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "evocation_tome"), EVOCATION_TOME);
         Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "windcalling_horn"), WINDCALLING_HORN);
+        Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "obfuscated_notes"), OBFUSCATED_NOTES);
+        Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "soul_shard"), SOUL_SHARD);
     }
 }
