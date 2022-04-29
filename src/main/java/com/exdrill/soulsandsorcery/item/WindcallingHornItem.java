@@ -42,7 +42,7 @@ public class WindcallingHornItem extends AbstractArtifactItem {
 
             for (LivingEntity entity : entities) {
                 knockback(entity, user);
-                entity.damage(DamageSource.FLY_INTO_WALL, 3.0F);
+                entity.damage(DamageSource.player(user), 3.0F);
             }
 
             Vec3d vec3d = user.getBoundingBox().getCenter();

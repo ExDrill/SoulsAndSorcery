@@ -85,7 +85,7 @@ public class EvocationTomeItem extends AbstractArtifactItem {
                 ((SoulComponents) user).addSouls(-soulUsage);
             }
 
-        } else if (world.isClient && user.getItemUseTime() > 5) {
+        } else if (world.isClient && user.getItemUseTime() > 10) {
             MinecraftClient.getInstance().inGameHud.addChatMessage(MessageType.GAME_INFO, new TranslatableText("gameplay.not_enough_souls"), UUID.randomUUID());
         }
     }
