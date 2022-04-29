@@ -41,7 +41,6 @@ public class AbstractArtifactItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(new LiteralText(""));
         tooltip.add(new TranslatableText("tooltip.soulsandsorcery.when_used").formatted(Formatting.GRAY));
         if (soulUsage == 1) {
             tooltip.add(new LiteralText(" ").append(new LiteralText(soulUsage * -1 + " ")).append(new TranslatableText("tooltip.soulsandsorcery.soul_usage.singular")).formatted(Formatting.AQUA));
