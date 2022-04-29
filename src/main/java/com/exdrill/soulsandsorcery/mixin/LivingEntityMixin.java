@@ -1,6 +1,7 @@
 package com.exdrill.soulsandsorcery.mixin;
 
 import com.exdrill.soulsandsorcery.SoulsAndSorcery;
+import com.exdrill.soulsandsorcery.access.LivingEntityAccess;
 import com.exdrill.soulsandsorcery.access.SoulComponents;
 import com.exdrill.soulsandsorcery.registry.ModItems;
 import com.exdrill.soulsandsorcery.registry.ModSounds;
@@ -28,7 +29,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin extends Entity implements SoulComponents {
+public abstract class LivingEntityMixin extends Entity implements SoulComponents, LivingEntityAccess {
 
     private static final TrackedData<Integer> SOULS_AMOUNT = DataTracker.registerData(LivingEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> CAN_SOUL_HARVEST = DataTracker.registerData(LivingEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
