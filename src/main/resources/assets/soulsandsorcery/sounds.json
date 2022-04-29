@@ -11,6 +11,12 @@
       "soulsandsorcery:item/petrified_artifact/escape"
     ]
   },
+  "item.windcalling_horn.blow": {
+    "subtitle": "subtitles.soulsandsorcery.item.windcalling_horn.blow",
+    "sounds": [
+      "soulsandsorcery:item/windcalling_horn/blow"
+    ]
+  },
   "block.petrified_glass.break": {
     "subtitle": "subtitles.soulsandsorcery.block.petrified_glass.break",
     "sounds": [
