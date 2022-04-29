@@ -1,6 +1,7 @@
 package com.exdrill.soulsandsorcery;
 
 import com.exdrill.soulsandsorcery.registry.ModBlocks;
+import com.exdrill.soulsandsorcery.registry.ModEntityType;
 import com.exdrill.soulsandsorcery.registry.ModItems;
 import com.exdrill.soulsandsorcery.registry.ModSounds;
 import net.fabricmc.api.ModInitializer;
@@ -27,6 +28,7 @@ public class SoulsAndSorcery implements ModInitializer {
 		Registry.register(Registry.ATTRIBUTE, new Identifier(SoulsAndSorcery.MODID, "generic.soul_gathering"), GENERIC_SOUL_GATHERING);
 		ModSounds.register();
 		ModBlocks.register();
+		ModEntityType.register();
 
 
 		LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {

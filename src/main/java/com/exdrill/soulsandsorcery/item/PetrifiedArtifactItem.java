@@ -38,7 +38,7 @@ public class PetrifiedArtifactItem extends Item {
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (user.getItemUseTime() > 20 && !((SoulComponents) user).canSoulHarvest()) {
+        if (user.getItemUseTime() > 10 && !((SoulComponents) user).canSoulHarvest()) {
 
             stack.decrement(1);
             double x = user.getX();

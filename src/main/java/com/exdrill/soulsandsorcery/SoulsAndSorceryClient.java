@@ -1,7 +1,12 @@
 package com.exdrill.soulsandsorcery;
 
+import com.exdrill.soulsandsorcery.client.render.entity.WeepingEntityRenderer;
+import com.exdrill.soulsandsorcery.client.render.entity.model.WeepingEntityModel;
 import com.exdrill.soulsandsorcery.registry.ModBlocks;
+import com.exdrill.soulsandsorcery.registry.ModEntityType;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.gui.DrawableHelper;
 
 public class SoulsAndSorceryClient extends DrawableHelper implements ClientModInitializer {
@@ -11,5 +16,9 @@ public class SoulsAndSorceryClient extends DrawableHelper implements ClientModIn
     @Override
     public void onInitializeClient() {
         ModBlocks.registerClient();
+
+
+        EntityRendererRegistry.register(ModEntityType.WEEPING, WeepingEntityRenderer::new);
+        EntityModelLayerRegistry.registerModelLayer(WeepingEntityModel.LAYER_LOCATION, WeepingEntityModel::createBodyLayer);
     }
 }
