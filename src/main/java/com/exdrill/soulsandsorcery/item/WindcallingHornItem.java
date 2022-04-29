@@ -4,6 +4,7 @@ import com.exdrill.soulsandsorcery.access.SoulComponents;
 import com.exdrill.soulsandsorcery.registry.ModSounds;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.MessageType;
@@ -35,14 +36,15 @@ public class WindcallingHornItem extends AbstractArtifactItem {
             BlockPos pos = user.getBlockPos();
 
             world.playSound(user, pos, ModSounds.ITEM_WINDCALLING_HORN_BLOW_EVENT, SoundCategory.PLAYERS, 50.0F, 1.0F);
-            // This should affect the entity that is using it
 
-            List<? extends LivingEntity> list = world.getEntitiesByClass(LivingEntity.class, new Box(pos).expand(4.0D), (e) -> true);
-            LivingEntity livingEntity;
-            list.iterator();
-            for (Iterator<? extends LivingEntity> var2 = list.iterator(); var2.hasNext(); this.knockback(livingEntity, user)) {
-                livingEntity = var2.next();
+            // Apply this.knockback to everything but the entity that is using the item
+            List<LivingEntity> entities = world.getEntitiesByClass(LivingEntity.class, new Box(pos).expand(3.0D), (entity) -> entity != user);
+
+            for (LivingEntity entity : entities) {
+                knockback(entity, user);
+                entity.damage(DamageSource.FLY_INTO_WALL, 1.0F);
             }
+
             Vec3d vec3d = user.getBoundingBox().getCenter();
             Random random = user.getRandom();
             for(int i = 0; i < 40; ++i) {
@@ -76,7 +78,7 @@ public class WindcallingHornItem extends AbstractArtifactItem {
         double d = entity.getX() - user.getX();
         double e = entity.getZ() - user.getZ();
         double f = Math.max(d * d + e * e, 0.001D);
-        entity.addVelocity(d / f * 4.0D, 0.3D, e / f * 4.0D);
+        entity.addVelocity(d / f * 2.0D, 0.3D, e / f * 2.0D);
         entity.velocityModified = true;
     }
 }

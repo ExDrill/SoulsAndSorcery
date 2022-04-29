@@ -59,7 +59,7 @@ public class EvocationTomeItem extends AbstractArtifactItem {
         float f = (float) MathHelper.atan2(user.getYaw() - user.getZ(), user.getYaw() - user.getX());
 
         // Functions
-        if (user.getItemUseTime() > 5 && ((SoulComponents) user).getSouls() >= soulUsage || user instanceof PlayerEntity player && player.getAbilities().creativeMode) {
+        if (user.getItemUseTime() > 10 && (((SoulComponents) user).getSouls() >= soulUsage || user instanceof PlayerEntity player && player.getAbilities().creativeMode)) {
             // Circle of Fangs
             if (user.isSneaking()) {
                 for (int i = 0; i < 8; ++i) {

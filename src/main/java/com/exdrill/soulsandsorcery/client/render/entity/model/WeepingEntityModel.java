@@ -13,9 +13,15 @@ import net.minecraft.util.Identifier;
 public class WeepingEntityModel<T extends HostileEntity> extends EntityModel<WeepingEntity> {
 	public static final EntityModelLayer LAYER_LOCATION = new EntityModelLayer(new Identifier(SoulsAndSorcery.MODID, "bawling"), "main");
 	private final ModelPart body;
+	private final ModelPart head;
+	private final ModelPart leftArm;
+	private final ModelPart rightArm;
 
 	public WeepingEntityModel(ModelPart root) {
 		this.body = root.getChild("body");
+		this.head = this.body.getChild("head");
+		this.leftArm = body.getChild("leftArm");
+		this.rightArm = body.getChild("rightArm");
 	}
 
 	public static TexturedModelData createBodyLayer() {
@@ -40,6 +46,5 @@ public class WeepingEntityModel<T extends HostileEntity> extends EntityModel<Wee
 
 	@Override
 	public void setAngles(WeepingEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
-
 	}
 }
