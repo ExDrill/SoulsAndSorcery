@@ -25,8 +25,6 @@ import java.util.UUID;
 public class EvocationTomeItem extends AbstractArtifactItem {
     private final int soulUsage;
 
-    private final float DegToRad = 0.01745329252F;
-
     public EvocationTomeItem(int soulUsage, Settings settings) {
         super(soulUsage, settings);
         this.soulUsage = soulUsage;
@@ -72,10 +70,11 @@ public class EvocationTomeItem extends AbstractArtifactItem {
             // Line of Fangs
             } else {
                 for (int i = 0; i < 8; ++i) {
-                    float offsetX = MathHelper.sin(-user.getYaw() * DegToRad);
-                    float offsetZ = MathHelper.cos(user.getYaw() * DegToRad);
+                    float degToRad = 0.01745329252F;
+                    float offsetX = MathHelper.sin(-user.getYaw() * degToRad);
+                    float offsetZ = MathHelper.cos(user.getYaw() * degToRad);
 
-                    this.conjureFangs(user.getX() + offsetX * (i + 1), user.getZ() + offsetZ * (i + 1), d, e, (user.getYaw() + 90) * DegToRad, i, user);
+                    this.conjureFangs(user.getX() + offsetX * (i + 1), user.getZ() + offsetZ * (i + 1), d, e, (user.getYaw() + 90) * degToRad, i, user);
                 }
             }
             // Remove 1 Durability

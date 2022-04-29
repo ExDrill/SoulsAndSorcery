@@ -33,6 +33,7 @@ public abstract class LivingEntityMixin extends Entity implements SoulComponents
 
     private static final TrackedData<Integer> SOULS_AMOUNT = DataTracker.registerData(LivingEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> CAN_SOUL_HARVEST = DataTracker.registerData(LivingEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    LivingEntity entity = (LivingEntity)(Object)this;
 
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
@@ -88,7 +89,7 @@ public abstract class LivingEntityMixin extends Entity implements SoulComponents
     }
 
 
-    LivingEntity entity = (LivingEntity)(Object)this;
+
 
 
     // Add Soul Gathering Attribute
@@ -103,6 +104,8 @@ public abstract class LivingEntityMixin extends Entity implements SoulComponents
     public void onKilledBy(LivingEntity adversary, CallbackInfo ci) {
         World world = ((LivingEntity)(Object)this).world;
         if (!world.isClient && adversary != null) {
+
+            // Soul Harvest
             if (((SoulComponents) adversary).canSoulHarvest()) {
 
                 int getSoulGathering = (int) adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING);
@@ -110,14 +113,19 @@ public abstract class LivingEntityMixin extends Entity implements SoulComponents
                     ((SoulComponents) adversary).addSouls(getSoulGathering + 1);
                 }
 
-                double x = entity.getX();
-                double y = entity.getY();
-                double z = entity.getZ();
-                BlockPos pos = new BlockPos(x, y, z);
+                // Grabbing Entity Position
+                BlockPos pos = entity.getBlockPos();
+
+                // Effects
                 world.playSound(null, pos, SoundEvents.PARTICLE_SOUL_ESCAPE, SoundCategory.PLAYERS, 50.0F, 1.0F);
                 ((ServerWorld)world).spawnParticles(ParticleTypes.SOUL, entity.getX(), entity.getY() + (entity.getStandingEyeHeight() * 0.7), entity.getZ(), 1, 0, 0, 0, 0);
 
-                System.out.println("Entity killed by " + adversary.getName().getString() + " with a soul gathering level of " + adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING));
+                // If Cannot Soul Harvest but Equipment can Soul Harvest
+            } else if (!((SoulComponents) adversary).canSoulHarvest() && adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) > 0) {
+                int getSoulGathering = (int) adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING);
+                if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == getSoulGathering) {
+                    ((SoulComponents) adversary).addSouls(getSoulGathering);
+                }
             }
         }
     }
@@ -126,14 +134,13 @@ public abstract class LivingEntityMixin extends Entity implements SoulComponents
     @Inject(method = "drop", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;shouldDropLoot()Z"))
     private void drop(DamageSource source, CallbackInfo ci) {
         if (((SoulComponents) entity).canSoulHarvest()) {
+            // Define Item
             ItemStack stack = new ItemStack(ModItems.PETRIFIED_ARTIFACT);
             entity.dropStack(stack);
-            System.out.println("Dropped petrified artifact");
-            double x = entity.getX();
-            double y = entity.getY();
-            double z = entity.getZ();
-            BlockPos pos = new BlockPos(x, y, z);
-            World world = ((LivingEntity)(Object)this).world;
+            // Get Position and World
+            BlockPos pos = entity.getBlockPos();
+            World world = entity.world;
+            // Play Sound
             if (!world.isClient) {
                 world.playSound(null, pos, ModSounds.ITEM_PETRIFIED_ARTIFACT_ESCAPE_EVENT, SoundCategory.PLAYERS, 50.0F, 1.0F);
             }
