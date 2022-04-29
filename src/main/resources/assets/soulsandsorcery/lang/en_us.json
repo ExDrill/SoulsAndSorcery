@@ -7,6 +7,7 @@
   "block.soulsandsorcery.petrified_glass": "Petrified Glass",
   "subtitles.soulsandsorcery.petrified_artifact.absorb": "Player absorbs artifact",
   "subtitles.soulsandsorcery.petrified_artifact.escape": "Player loses artifact",
+  "subtitles.soulsandsorcery.item.windcalling_horn.blow": "Player blows horn",
   "subtitles.soulsandsorcery.block.petrified_glass.break": "Block broken",
   "subtitles.soulsandsorcery.block.petrified_glass.place": "Block placed",
   "tooltip.soulsandsorcery.when_used": "When used:",
