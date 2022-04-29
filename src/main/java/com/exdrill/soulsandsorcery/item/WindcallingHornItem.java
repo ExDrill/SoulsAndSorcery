@@ -38,11 +38,11 @@ public class WindcallingHornItem extends AbstractArtifactItem {
             world.playSound(user, pos, ModSounds.ITEM_WINDCALLING_HORN_BLOW_EVENT, SoundCategory.PLAYERS, 50.0F, 1.0F);
 
             // Apply this.knockback to everything but the entity that is using the item
-            List<LivingEntity> entities = world.getEntitiesByClass(LivingEntity.class, new Box(pos).expand(3.0D), (entity) -> entity != user);
+            List<LivingEntity> entities = world.getEntitiesByClass(LivingEntity.class, new Box(pos).expand(5.0D), (entity) -> entity != user);
 
             for (LivingEntity entity : entities) {
                 knockback(entity, user);
-                entity.damage(DamageSource.FLY_INTO_WALL, 1.0F);
+                entity.damage(DamageSource.FLY_INTO_WALL, 3.0F);
             }
 
             Vec3d vec3d = user.getBoundingBox().getCenter();
@@ -78,7 +78,7 @@ public class WindcallingHornItem extends AbstractArtifactItem {
         double d = entity.getX() - user.getX();
         double e = entity.getZ() - user.getZ();
         double f = Math.max(d * d + e * e, 0.001D);
-        entity.addVelocity(d / f * 3.15D, 0.4D, e / f * 3.15D);
+        entity.addVelocity(d / f * 3.25D, 0.4D, e / f * 3.25D);
         entity.velocityModified = true;
     }
 }
