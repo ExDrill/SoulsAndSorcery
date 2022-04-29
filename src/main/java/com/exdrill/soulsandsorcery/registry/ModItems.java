@@ -19,8 +19,8 @@ public class ModItems {
     public static final SoulWeaponItem HAUNTED_SICKLE = new SoulWeaponItem(6, -3, 1, new Item.Settings().group(ItemGroup.COMBAT).maxCount(1).maxDamage(1024));
     public static final PetrifiedArtifactItem PETRIFIED_ARTIFACT = new PetrifiedArtifactItem(new Item.Settings().group(ItemGroup.MISC).maxCount(1).rarity(Rarity.UNCOMMON).fireproof());
     public static final BlockItem PETRIFIED_GLASS = new BlockItem(ModBlocks.PETRIFIED_GLASS, new Item.Settings().group(ItemGroup.BUILDING_BLOCKS));
-    public static final EvocationTomeItem EVOCATION_TOME = new EvocationTomeItem(2, new Item.Settings().group(ItemGroup.COMBAT).maxCount(1).maxDamage(512));
-    public static final WindcallingHornItem WINDCALLING_HORN = new WindcallingHornItem(1, new Item.Settings().group(ItemGroup.COMBAT).maxCount(1).maxDamage(204));
+    public static final EvocationTomeItem EVOCATION_TOME = new EvocationTomeItem(2, new Item.Settings().group(ItemGroup.COMBAT).maxCount(1).maxDamage(318).rarity(Rarity.RARE));
+    public static final WindcallingHornItem WINDCALLING_HORN = new WindcallingHornItem(1, new Item.Settings().group(ItemGroup.COMBAT).maxCount(1).maxDamage(204).rarity(Rarity.RARE));
     // Item Registry
     public static void register() {
         Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "haunted_sickle"), HAUNTED_SICKLE);
