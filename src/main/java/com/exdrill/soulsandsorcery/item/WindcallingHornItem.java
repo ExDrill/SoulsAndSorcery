@@ -54,6 +54,8 @@ public class WindcallingHornItem extends AbstractArtifactItem {
             }
 
             user.getItemCooldownManager().set(this, 200);
+            ItemStack stack = user.getStackInHand(hand);
+            stack.damage(1, user, (p_220043_1_) -> p_220043_1_.sendToolBreakStatus(hand));
             return TypedActionResult.success(user.getStackInHand(hand));
         } else {
             if (world.isClient) {
