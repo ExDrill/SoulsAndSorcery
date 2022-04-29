@@ -46,7 +46,7 @@ public class AbstractArtifactItem extends Item {
         if (soulUsage == 1) {
             tooltip.add(new LiteralText(" ").append(new LiteralText(soulUsage * -1 + " ")).append(new TranslatableText("tooltip.soulsandsorcery.soul_usage.singular")).formatted(Formatting.AQUA));
         } else {
-            tooltip.add(new LiteralText(soulUsage * -1 + " ").append(new TranslatableText("tooltip.soulsandsorcery.soul_usage.plural")).formatted(Formatting.AQUA));
+            tooltip.add(new LiteralText(" ").append(new LiteralText(soulUsage * -1 + " ")).append(new TranslatableText("tooltip.soulsandsorcery.soul_usage.plural")).formatted(Formatting.AQUA));
         }
         super.appendTooltip(stack, world, tooltip, context);
     }
