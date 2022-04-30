@@ -163,5 +163,10 @@ public abstract class LivingEntityMixin extends Entity implements SoulComponents
                 world.playSound(null, pos, ModSounds.ITEM_PETRIFIED_ARTIFACT_ESCAPE_EVENT, SoundCategory.PLAYERS, 50.0F, 1.0F);
             }
         }
+
+        if (entity instanceof WolfEntity wolf && ((WolfEntityAccess) wolf).isCollared()) {
+            ItemStack stack = new ItemStack(ModItems.COLLAR_OF_BONDING);
+            entity.dropStack(stack);
+        }
     }
 }

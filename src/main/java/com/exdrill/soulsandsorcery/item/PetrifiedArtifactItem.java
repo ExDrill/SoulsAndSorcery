@@ -39,13 +39,8 @@ public class PetrifiedArtifactItem extends Item {
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user.getItemUseTime() > 10 && !((SoulComponents) user).canSoulHarvest()) {
-
             stack.decrement(1);
-            double x = user.getX();
-            double y = user.getY();
-            double z = user.getZ();
-            BlockPos pos = new BlockPos(x, y, z);
-            world.playSound(null, pos, ModSounds.ITEM_PETRIFIED_ARTIFACT_ABSORB_EVENT, SoundCategory.PLAYERS, 100.0F, 1.0F);
+            user.playSound(ModSounds.ITEM_PETRIFIED_ARTIFACT_ABSORB_EVENT, 100.0F, 1.0F);
             if (world.isClient) {
                 MinecraftClient.getInstance().gameRenderer.showFloatingItem(new ItemStack(ModItems.PETRIFIED_ARTIFACT));
             }
