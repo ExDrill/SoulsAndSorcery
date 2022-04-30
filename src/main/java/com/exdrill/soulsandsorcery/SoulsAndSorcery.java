@@ -37,7 +37,7 @@ public class SoulsAndSorcery implements ModInitializer {
 				FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
 						.rolls(UniformLootNumberProvider.create(1, 1))
 						.withEntry(ItemEntry.builder(ModItems.PETRIFIED_ARTIFACT).weight(1).build())
-						.withEntry(ItemEntry.builder(Items.GOLD_INGOT).weight(2).build());
+						.withEntry(ItemEntry.builder(Items.GOLD_INGOT).weight(3).build());
 
 				supplier.withPool(poolBuilder.build());
 			}
@@ -45,7 +45,7 @@ public class SoulsAndSorcery implements ModInitializer {
 				FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
 						.rolls(UniformLootNumberProvider.create(1, 1))
 						.withEntry(ItemEntry.builder(ModItems.EVOCATION_TOME).weight(1).build())
-						.withEntry(ItemEntry.builder(Items.BOOK).weight(3).build());
+						.withEntry(ItemEntry.builder(Items.BOOK).weight(2).build());
 
 				supplier.withPool(poolBuilder.build());
 			}
