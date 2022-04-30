@@ -44,9 +44,8 @@ public class SoulsAndSorcery implements ModInitializer {
 			if (WOODLAND_MANSION_CHEST.equals(id)) {
 				FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
 						.rolls(UniformLootNumberProvider.create(1, 1))
-						.withEntry(ItemEntry.builder(ModItems.OBFUSCATED_NOTES).weight(1).build())
-						.withEntry(ItemEntry.builder(Items.BOOK).weight(2).build());
-
+						.withEntry(ItemEntry.builder(ModItems.EVOCATION_TOME).weight(1).build())
+						.withEntry(ItemEntry.builder(Items.BOOK).weight(3).build());
 
 				supplier.withPool(poolBuilder.build());
 			}
