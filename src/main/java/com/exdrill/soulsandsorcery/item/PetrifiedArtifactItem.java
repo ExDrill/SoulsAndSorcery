@@ -32,7 +32,7 @@ public class PetrifiedArtifactItem extends Item {
     }
 
     public int getMaxUseTime(ItemStack stack) {
-        return 72000;
+        return 40;
     }
 
 
