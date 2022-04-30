@@ -141,7 +141,7 @@ public abstract class LivingEntityMixin extends Entity implements SoulComponents
                 if (player != null && ((SoulComponents) player).canSoulHarvest()) {
                     BlockPos pos = entity.getBlockPos();
                     ((SoulComponents) player).addSouls(1);
-                    world.playSound(null, pos, SoundEvents.PARTICLE_SOUL_ESCAPE, SoundCategory.PLAYERS, 50.0F, 1.0F);
+                    world.playSound(null, pos, SoundEvents.PARTICLE_SOUL_ESCAPE, SoundCategory.AMBIENT, 50.0F, 1.0F);
                     ((ServerWorld)world).spawnParticles(ParticleTypes.SOUL, entity.getX(), entity.getY() + (entity.getStandingEyeHeight() * 0.7), entity.getZ(), 1, 0, 0, 0, 0);
                 }
             }

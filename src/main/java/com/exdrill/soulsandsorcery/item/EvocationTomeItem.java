@@ -35,7 +35,7 @@ public class EvocationTomeItem extends AbstractArtifactItem {
         user.setCurrentHand(hand);
         BlockPos pos = user.getBlockPos();
         if (((SoulComponents) user).getSouls() >= soulUsage || user.getAbilities().creativeMode) {
-            world.playSound(user, pos, SoundEvents.ENTITY_EVOKER_CAST_SPELL, SoundCategory.PLAYERS, 100F, 1F);
+            world.playSound(user, pos, SoundEvents.ENTITY_EVOKER_PREPARE_ATTACK, SoundCategory.PLAYERS, 100F, 1F);
         }
         return TypedActionResult.consume(itemStack);
     }
