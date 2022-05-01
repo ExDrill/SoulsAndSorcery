@@ -16,5 +16,9 @@
   "tooltip.soulsandsorcery.when_used": "When used:",
   "tooltip.soulsandsorcery.soul_usage.singular": "Soul",
   "tooltip.soulsandsorcery.soul_usage.plural": "Souls",
-  "gameplay.not_enough_souls": "Not enough souls!"
+  "gameplay.not_enough_souls": "Not enough souls!",
+  "subtitles.soulsandsorcery.entity.departed_wolf.growl":  "Departed Wolf growls",
+  "subtitles.soulsandsorcery.entity.departed_wolf.step":  "Departed Wolf steps",
+  "subtitles.soulsandsorcery.entity.departed_wolf.death": "Departed Wolf dies",
+  "subtitles.soulsandsorcery.entity.departed_wolf.hurt": "Departed Wolf hurts"
 }

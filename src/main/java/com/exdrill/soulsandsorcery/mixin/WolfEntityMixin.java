@@ -30,6 +30,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(WolfEntity.class)
 public abstract class WolfEntityMixin extends TameableEntity implements WolfEntityAccess {
 
+
     @Shadow public abstract boolean damage(DamageSource source, float amount);
 
     private static final TrackedData<Boolean> COLLAR_OF_BONDING = DataTracker.registerData(WolfEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -78,6 +79,7 @@ public abstract class WolfEntityMixin extends TameableEntity implements WolfEnti
             this.heal(1.0F);
         }
     }
+
 
     @Override
     public boolean isCollared() {

@@ -1,5 +1,6 @@
 package com.exdrill.soulsandsorcery.entity;
 
+import com.exdrill.soulsandsorcery.registry.ModSounds;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.*;
@@ -8,12 +9,15 @@ import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,6 +55,22 @@ public class DepartedWolfEntity extends HostileEntity {
     }
 
     @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSounds.ENTITY_DEPARTED_WOLF_HURT_EVENT;
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSounds.ENTITY_DEPARTED_WOLF_GROWL_EVENT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSounds.ENTITY_DEPARTED_WOLF_DEATH_EVENT;
+    }
+
+    @Override
     public EntityGroup getGroup() {
         return EntityGroup.UNDEAD;
     }
@@ -60,6 +80,11 @@ public class DepartedWolfEntity extends HostileEntity {
         super.initDataTracker();
         // Add a frame nbt
         this.dataTracker.startTracking(ANIMATION_FRAME, 0);
+    }
+
+    @Override
+    protected void applyMovementEffects(BlockPos pos) {
+        super.applyMovementEffects(pos);
     }
 
     @Override
@@ -97,12 +122,12 @@ public class DepartedWolfEntity extends HostileEntity {
 
     @Override
     protected void addSoulSpeedBoostIfNeeded() {
-        if (!this.getLandingBlockState().isAir()) {
+        if (!this.getLandingBlockState().isAir() && this.isOnSoulSpeedBlock()) {
             EntityAttributeInstance entityAttributeInstance = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
             if (entityAttributeInstance == null) {
                 return;
             }
-            entityAttributeInstance.addTemporaryModifier(new EntityAttributeModifier(SOUL_SPEED_BOOST_ID, "Soul speed boost", 0.03F * (1.0F + (float)3 * 0.35F), EntityAttributeModifier.Operation.ADDITION));
+            entityAttributeInstance.addTemporaryModifier(new EntityAttributeModifier(SOUL_SPEED_BOOST_ID, "Soul speed boost", 0.03F * (1.0F + (float)20 * 0.35F), EntityAttributeModifier.Operation.ADDITION));
         }
     }
 
