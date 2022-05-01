@@ -1,10 +1,9 @@
 package com.exdrill.soulsandsorcery.entity;
 
 import com.exdrill.soulsandsorcery.registry.ModSounds;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.EntityGroup;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.ai.pathing.PathNodeType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -15,6 +14,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.mob.AbstractPiglinEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.ZombifiedPiglinEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -54,6 +54,7 @@ public class DepartedWolfEntity extends HostileEntity {
         this.goalSelector.add(4, new PounceAtTargetGoal(this, 0.4F));
         this.goalSelector.add(5, new MeleeAttackGoal(this, 1.0D, true));
         this.goalSelector.add(4, new ActiveTargetGoal<>(this, PlayerEntity.class, false));
+        this.goalSelector.add(5, new ActiveTargetGoal<>(this, AbstractPiglinEntity.class, true));
         this.targetSelector.add(1, (new RevengeGoal(this, new Class[0])).setGroupRevenge(new Class[0]));
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
@@ -67,6 +68,14 @@ public class DepartedWolfEntity extends HostileEntity {
 
     public static boolean canSpawn(EntityType<DepartedWolfEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) {
         return world.getDifficulty() != Difficulty.PEACEFUL && !world.getBlockState(pos.down()).isOf(Blocks.NETHER_WART_BLOCK);
+    }
+
+    @Override
+    public void onAttacking(Entity target) {
+        if (this.world.getDifficulty() != Difficulty.EASY && target != null) {
+            target.setOnFireFor(5);
+        }
+        super.onAttacking(target);
     }
 
     @Nullable
