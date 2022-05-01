@@ -1,22 +1,27 @@
 package com.exdrill.soulsandsorcery.entity;
 
-import com.exdrill.soulsandsorcery.client.render.entity.model.DepartedWolfEntityModel;
+import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.ai.pathing.PathNodeType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.raid.RaiderEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.UUID;
 
 public class DepartedWolfEntity extends HostileEntity {
+
+    private static final UUID SOUL_SPEED_BOOST_ID = UUID.fromString("87f46a96-686f-4796-b035-22e16ee9e038");
 
     private static final TrackedData<Integer> ANIMATION_FRAME = DataTracker.registerData(DepartedWolfEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
@@ -34,14 +39,20 @@ public class DepartedWolfEntity extends HostileEntity {
 
     @Override
     protected void initGoals() {
+        this.goalSelector.add(1, new SwimGoal(this));
         this.goalSelector.add(5, new WanderAroundFarGoal(this, 1.0D));
-        this.goalSelector.add(2, new MeleeAttackGoal(this, 1.4D, true));
-        this.goalSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, false));
-        this.goalSelector.add(2, new PounceAtTargetGoal(this, 0.4F));
+        this.goalSelector.add(4, new PounceAtTargetGoal(this, 0.4F));
+        this.goalSelector.add(5, new MeleeAttackGoal(this, 1.0D, true));
+        this.goalSelector.add(4, new ActiveTargetGoal<>(this, PlayerEntity.class, false));
         this.targetSelector.add(1, (new RevengeGoal(this, new Class[0])).setGroupRevenge(new Class[0]));
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
         super.initGoals();
+    }
+
+    @Override
+    public EntityGroup getGroup() {
+        return EntityGroup.UNDEAD;
     }
 
     @Override
@@ -85,10 +96,18 @@ public class DepartedWolfEntity extends HostileEntity {
     }
 
     @Override
-    protected void applyMovementEffects(BlockPos pos) {
-        this.addSoulSpeedBoostIfNeeded();
-        super.applyMovementEffects(pos);
+    protected void addSoulSpeedBoostIfNeeded() {
+        if (!this.getLandingBlockState().isAir()) {
+            EntityAttributeInstance entityAttributeInstance = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
+            if (entityAttributeInstance == null) {
+                return;
+            }
+            entityAttributeInstance.addTemporaryModifier(new EntityAttributeModifier(SOUL_SPEED_BOOST_ID, "Soul speed boost", 0.03F * (1.0F + (float)3 * 0.35F), EntityAttributeModifier.Operation.ADDITION));
+        }
     }
+
+
+
 
     public static DefaultAttributeContainer.Builder createDepartedWolfEntity() {
         return HostileEntity.createMobAttributes()
@@ -97,5 +116,6 @@ public class DepartedWolfEntity extends HostileEntity {
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 5.0D);
 
     }
+
 
 }
