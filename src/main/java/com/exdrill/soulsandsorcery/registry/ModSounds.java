@@ -20,6 +20,15 @@ public class ModSounds {
     public static SoundEvent BLOCK_PETRIFIED_GLASS_PLACE_EVENT = new SoundEvent(BLOCK_PETRIFIED_GLASS_PLACE);
     public static SoundEvent ITEM_WINDCALLING_HORN_BLOW_EVENT = new SoundEvent(ITEM_WINDCALLING_HORN_BLOW);
 
+    public static final Identifier ENTITY_DEPARTED_WOLF_GROWL = new Identifier(SoulsAndSorcery.MODID, "entity.departed_wolf.growl");
+    public static final Identifier ENTITY_DEPARTED_WOLF_HURT = new Identifier(SoulsAndSorcery.MODID, "entity.departed_wolf.hurt");
+    public static final Identifier ENTITY_DEPARTED_WOLF_DEATH = new Identifier(SoulsAndSorcery.MODID, "entity.departed_wolf.death");
+    public static final Identifier ENTITY_DEPARTED_WOLF_STEP = new Identifier(SoulsAndSorcery.MODID, "entity.departed_wolf.step");
+    public static SoundEvent ENTITY_DEPARTED_WOLF_GROWL_EVENT = new SoundEvent(ENTITY_DEPARTED_WOLF_GROWL);
+    public static SoundEvent ENTITY_DEPARTED_WOLF_HURT_EVENT = new SoundEvent(ENTITY_DEPARTED_WOLF_HURT);
+    public static SoundEvent ENTITY_DEPARTED_WOLF_DEATH_EVENT = new SoundEvent(ENTITY_DEPARTED_WOLF_DEATH);
+    public static SoundEvent ENTITY_DEPARTED_WOLF_STEP_EVENT = new SoundEvent(ENTITY_DEPARTED_WOLF_STEP);
+
     public static final BlockSoundGroup PETRIFIED_GLASS  = new BlockSoundGroup(1.0F, 1.0F, BLOCK_PETRIFIED_GLASS_BREAK_EVENT, SoundEvents.BLOCK_GLASS_STEP, BLOCK_PETRIFIED_GLASS_PLACE_EVENT, SoundEvents.BLOCK_GLASS_HIT, SoundEvents.BLOCK_GLASS_FALL);
 
     public static void register() {
@@ -27,5 +36,10 @@ public class ModSounds {
         Registry.register(Registry.SOUND_EVENT, ITEM_PETRIFIED_ARTIFACT_ESCAPE, ITEM_PETRIFIED_ARTIFACT_ESCAPE_EVENT);
         Registry.register(Registry.SOUND_EVENT, BLOCK_PETRIFIED_GLASS_BREAK, BLOCK_PETRIFIED_GLASS_BREAK_EVENT);
         Registry.register(Registry.SOUND_EVENT, BLOCK_PETRIFIED_GLASS_PLACE, BLOCK_PETRIFIED_GLASS_PLACE_EVENT);
+        Registry.register(Registry.SOUND_EVENT, ITEM_WINDCALLING_HORN_BLOW, ITEM_WINDCALLING_HORN_BLOW_EVENT);
+        Registry.register(Registry.SOUND_EVENT, ENTITY_DEPARTED_WOLF_GROWL, ENTITY_DEPARTED_WOLF_GROWL_EVENT);
+        Registry.register(Registry.SOUND_EVENT, ENTITY_DEPARTED_WOLF_HURT, ENTITY_DEPARTED_WOLF_HURT_EVENT);
+        Registry.register(Registry.SOUND_EVENT, ENTITY_DEPARTED_WOLF_DEATH, ENTITY_DEPARTED_WOLF_DEATH_EVENT);
+        Registry.register(Registry.SOUND_EVENT, ENTITY_DEPARTED_WOLF_STEP, ENTITY_DEPARTED_WOLF_STEP_EVENT);
     }
 }

@@ -3,18 +3,19 @@ package com.exdrill.soulsandsorcery.mixin;
 import com.exdrill.soulsandsorcery.SoulsAndSorcery;
 import com.exdrill.soulsandsorcery.access.LivingEntityAccess;
 import com.exdrill.soulsandsorcery.access.SoulComponents;
+import com.exdrill.soulsandsorcery.access.WolfEntityAccess;
 import com.exdrill.soulsandsorcery.registry.ModItems;
 import com.exdrill.soulsandsorcery.registry.ModSounds;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.mob.EvokerEntity;
+import net.minecraft.entity.passive.WolfEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
@@ -30,15 +31,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import java.util.Random;
-
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements SoulComponents, LivingEntityAccess {
 
     private static final TrackedData<Integer> SOULS_AMOUNT = DataTracker.registerData(LivingEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> CAN_SOUL_HARVEST = DataTracker.registerData(LivingEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     LivingEntity entity = (LivingEntity)(Object)this;
-    SpawnReason reason;
 
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
@@ -132,6 +130,17 @@ public abstract class LivingEntityMixin extends Entity implements SoulComponents
                     ((SoulComponents) adversary).addSouls(getSoulGathering);
                 }
             }
+
+            if (adversary instanceof WolfEntity wolf && ((WolfEntityAccess) wolf).isCollared()) {
+                PlayerEntity player = (PlayerEntity) wolf.getOwner();
+                System.out.println("Success");
+                if (player != null && ((SoulComponents) player).canSoulHarvest()) {
+                    BlockPos pos = entity.getBlockPos();
+                    ((SoulComponents) player).addSouls(1);
+                    world.playSound(null, pos, SoundEvents.PARTICLE_SOUL_ESCAPE, SoundCategory.AMBIENT, 50.0F, 1.0F);
+                    ((ServerWorld)world).spawnParticles(ParticleTypes.SOUL, entity.getX(), entity.getY() + (entity.getStandingEyeHeight() * 0.7), entity.getZ(), 1, 0, 0, 0, 0);
+                }
+            }
         }
     }
 
@@ -149,6 +158,11 @@ public abstract class LivingEntityMixin extends Entity implements SoulComponents
             if (!world.isClient) {
                 world.playSound(null, pos, ModSounds.ITEM_PETRIFIED_ARTIFACT_ESCAPE_EVENT, SoundCategory.PLAYERS, 50.0F, 1.0F);
             }
+        }
+
+        if (entity instanceof WolfEntity wolf && ((WolfEntityAccess) wolf).isCollared()) {
+            ItemStack stack = new ItemStack(ModItems.COLLAR_OF_BONDING);
+            entity.dropStack(stack);
         }
     }
 }

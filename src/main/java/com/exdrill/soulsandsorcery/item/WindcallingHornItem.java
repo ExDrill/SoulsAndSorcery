@@ -30,7 +30,7 @@ public class WindcallingHornItem extends AbstractArtifactItem {
         if (((SoulComponents) user).getSouls() >= soulUsage || user.getAbilities().creativeMode) {
             BlockPos pos = user.getBlockPos();
 
-            world.playSound(user, pos, ModSounds.ITEM_WINDCALLING_HORN_BLOW_EVENT, SoundCategory.PLAYERS, 50.0F, 1.0F);
+            user.playSound(ModSounds.ITEM_WINDCALLING_HORN_BLOW_EVENT, 100F, 1.0F);
 
             // Apply this.knockback to everything but the entity that is using the item
             List<LivingEntity> entities = world.getEntitiesByClass(LivingEntity.class, new Box(pos).expand(5.0D), (entity) -> entity != user);

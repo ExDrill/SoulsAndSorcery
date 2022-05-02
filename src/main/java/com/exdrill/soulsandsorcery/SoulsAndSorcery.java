@@ -1,19 +1,28 @@
 package com.exdrill.soulsandsorcery;
 
+import com.exdrill.soulsandsorcery.entity.DepartedWolfEntity;
 import com.exdrill.soulsandsorcery.registry.ModBlocks;
 import com.exdrill.soulsandsorcery.registry.ModEntityType;
 import com.exdrill.soulsandsorcery.registry.ModItems;
 import com.exdrill.soulsandsorcery.registry.ModSounds;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
 import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
+import net.fabricmc.fabric.mixin.object.builder.SpawnRestrictionAccessor;
+import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.SpawnRestriction;
 import net.minecraft.entity.attribute.ClampedEntityAttribute;
 import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.item.Items;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.provider.number.UniformLootNumberProvider;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.Heightmap;
+import net.minecraft.world.biome.BiomeKeys;
 
 public class SoulsAndSorcery implements ModInitializer {
 	public static final String MODID = "soulsandsorcery";
@@ -31,6 +40,8 @@ public class SoulsAndSorcery implements ModInitializer {
 		ModBlocks.register();
 		ModEntityType.register();
 
+		BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.SOUL_SAND_VALLEY), SpawnGroup.MONSTER, ModEntityType.DEPARTED_WOLF, 2, 3, 4);
+		SpawnRestrictionAccessor.callRegister(ModEntityType.DEPARTED_WOLF, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, DepartedWolfEntity::canSpawn);
 
 		LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
 			if (NETHER_FORTRESS_LOOT.equals(id)) {
