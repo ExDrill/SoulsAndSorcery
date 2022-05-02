@@ -1,7 +1,6 @@
 package com.exdrill.soulsandsorcery.entity;
 
 import com.exdrill.soulsandsorcery.registry.ModSounds;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
@@ -15,8 +14,8 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.AbstractPiglinEntity;
+import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.entity.mob.ZombifiedPiglinEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundEvent;
@@ -57,6 +56,8 @@ public class DepartedWolfEntity extends HostileEntity {
         this.goalSelector.add(5, new ActiveTargetGoal<>(this, AbstractPiglinEntity.class, true));
         this.targetSelector.add(1, (new RevengeGoal(this, new Class[0])).setGroupRevenge(new Class[0]));
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
+        this.goalSelector.add(3, new FleeEntityGoal<>(this, CreeperEntity.class, 10.0F, 1.0D, 1.2D));
+
         this.goalSelector.add(8, new LookAroundGoal(this));
         super.initGoals();
     }
