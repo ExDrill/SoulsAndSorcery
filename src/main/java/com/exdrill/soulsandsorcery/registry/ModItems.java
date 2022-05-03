@@ -24,6 +24,7 @@ public class ModItems {
     public static final WindcallingHornItem WINDCALLING_HORN = new WindcallingHornItem(1, new Item.Settings().group(ItemGroup.COMBAT).maxCount(1).maxDamage(204).rarity(Rarity.RARE));
     public static final Item COLLAR_OF_BONDING = new Item(new Item.Settings().group(ItemGroup.COMBAT).maxCount(1).rarity(Rarity.UNCOMMON));
     public static final SpawnEggItem DEPARTED_WOLF_SPAWN_EGG = new SpawnEggItem(ModEntityType.DEPARTED_WOLF, 0x1a1c1f, 0x58defc, new Item.Settings().group(ItemGroup.MISC));
+    public static final BlockItem RUSTY_CAGE = new BlockItem(ModBlocks.RUSTY_CAGE, new Item.Settings().group(ItemGroup.DECORATIONS));
 
     // Item Registry
     public static void register() {
@@ -34,5 +35,6 @@ public class ModItems {
         Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "windcalling_horn"), WINDCALLING_HORN);
         Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "collar_of_bonding"), COLLAR_OF_BONDING);
         Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "departed_wolf_spawn_egg"), DEPARTED_WOLF_SPAWN_EGG);
+        Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "rusty_cage"), RUSTY_CAGE);
     }
 }
