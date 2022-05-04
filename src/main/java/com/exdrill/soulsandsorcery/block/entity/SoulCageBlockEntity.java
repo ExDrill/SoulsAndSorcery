@@ -3,6 +3,7 @@ package com.exdrill.soulsandsorcery.block.entity;
 import com.exdrill.soulsandsorcery.registry.ModBlockEntityType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.data.DataTracker;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
@@ -17,18 +18,21 @@ public class SoulCageBlockEntity extends BlockEntity {
         super(ModBlockEntityType.SOUL_CAGE, pos, state);
     }
 
-    public int soulsStored = 0;
+
+
+
+    int soulsStored = 0;
 
     @Override
     protected void writeNbt(NbtCompound nbt) {
-        nbt.putInt("SoulsStored", soulsStored);
         super.writeNbt(nbt);
+        nbt.putInt("SoulsStored", soulsStored);
     }
 
     @Override
     public void readNbt(NbtCompound nbt) {
-        soulsStored = nbt.getInt("SoulsStored");
         super.readNbt(nbt);
+        this.soulsStored = nbt.getInt("SoulsStored");
     }
 
     @Override
@@ -44,10 +48,6 @@ public class SoulCageBlockEntity extends BlockEntity {
 
     public int getSoulsStored() {
         return soulsStored;
-    }
-
-    public void setSoulsStored(int soulsStored) {
-        this.soulsStored = soulsStored;
     }
 
     public void addStoredSouls(int amount) {

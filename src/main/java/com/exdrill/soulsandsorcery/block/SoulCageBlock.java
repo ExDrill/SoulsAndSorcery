@@ -61,10 +61,16 @@ public class SoulCageBlock extends BlockWithEntity {
 
         ItemStack itemStack = player.getStackInHand(hand);
 
-        if (itemStack.isEmpty() && blockEntity instanceof SoulCageBlockEntity rustyCage && rustyCage.getSoulsStored() < 20 && ((SoulComponents) player).getSouls() > 0) {
+        if (itemStack.isEmpty() && blockEntity instanceof SoulCageBlockEntity rustyCage && rustyCage.getSoulsStored() < 20 && ((SoulComponents) player).getSouls() > 0 && !player.isSneaking()) {
             rustyCage.addStoredSouls(1);
             ((SoulComponents) player).addSouls(-1);
-            world.playSound(player, pos, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.5F, 1.0F);
+            world.playSound(player, pos, SoundEvents.BLOCK_RESPAWN_ANCHOR_CHARGE, SoundCategory.BLOCKS, 0.5F, 1.0F);
+            world.playSound(player, pos, SoundEvents.PARTICLE_SOUL_ESCAPE, SoundCategory.BLOCKS, 0.5F, 1.0F);
+            return ActionResult.SUCCESS;
+        } else if (itemStack.isEmpty() && blockEntity instanceof SoulCageBlockEntity rustyCage && ((SoulComponents) player).getSouls() < 20 && player.isSneaking() && rustyCage.getSoulsStored() > 0) {
+            rustyCage.addStoredSouls(-1);
+            ((SoulComponents) player).addSouls(1);
+            world.playSound(player, pos, SoundEvents.BLOCK_RESPAWN_ANCHOR_DEPLETE, SoundCategory.BLOCKS, 0.5F, 1.0F);
             return ActionResult.SUCCESS;
         } else {
             return ActionResult.FAIL;
@@ -101,12 +107,13 @@ public class SoulCageBlock extends BlockWithEntity {
     }
 
     @Override
-    public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+    public void onBroken(WorldAccess world, BlockPos pos, BlockState state) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (blockEntity instanceof SoulCageBlockEntity rustyCage && rustyCage.getSoulsStored() > 0) {
-            world.addParticle(ParticleTypes.SOUL, pos.getX(), pos.getY() + 0.5, pos.getZ(), 0, 0, 0);
+            world.addParticle(ParticleTypes.SOUL, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0, 0, 0);
         }
-        super.onBreak(world, pos, state, player);
+        world.playSound(null, pos, SoundEvents.PARTICLE_SOUL_ESCAPE, SoundCategory.BLOCKS, 0.5F, 1.0F);
+        super.onBroken(world, pos, state);
     }
 
     @Override
