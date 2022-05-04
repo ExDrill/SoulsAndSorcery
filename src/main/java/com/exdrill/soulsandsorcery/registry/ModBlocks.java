@@ -1,9 +1,9 @@
 package com.exdrill.soulsandsorcery.registry;
 
 import com.exdrill.soulsandsorcery.SoulsAndSorcery;
+import com.exdrill.soulsandsorcery.block.SoulCageBlock;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.GlassBlock;
 import net.minecraft.block.Material;
@@ -21,17 +21,17 @@ public class ModBlocks {
     }
 
     public static final GlassBlock PETRIFIED_GLASS = new GlassBlock(FabricBlockSettings.of(Material.GLASS).nonOpaque().sounds(ModSounds.PETRIFIED_GLASS).strength(0.3F).suffocates(ModBlocks::never).blockVision(ModBlocks::never).solidBlock(ModBlocks::never));
-    public static final Block RUSTY_CAGE = new Block(FabricBlockSettings.of(Material.METAL).nonOpaque().sounds(BlockSoundGroup.CHAIN).strength(5.0F, 6.0F).suffocates(ModBlocks::never).blockVision(ModBlocks::never).solidBlock(ModBlocks::never));
+    public static final SoulCageBlock SOUL_CAGE = new SoulCageBlock(FabricBlockSettings.of(Material.METAL).nonOpaque().sounds(BlockSoundGroup.CHAIN).strength(5.0F, 6.0F).suffocates(ModBlocks::never).blockVision(ModBlocks::never).solidBlock(ModBlocks::never));
 
 
     public static void register() {
         Registry.register(Registry.BLOCK, new Identifier(SoulsAndSorcery.MODID, "petrified_glass"), PETRIFIED_GLASS);
-        Registry.register(Registry.BLOCK, new Identifier(SoulsAndSorcery.MODID, "rusty_cage"), RUSTY_CAGE);
+        Registry.register(Registry.BLOCK, new Identifier(SoulsAndSorcery.MODID, "soul_cage"), SOUL_CAGE);
 
     }
 
     public static void registerClient() {
         BlockRenderLayerMap.INSTANCE.putBlock(PETRIFIED_GLASS, RenderLayer.getTranslucent());
-        BlockRenderLayerMap.INSTANCE.putBlock(RUSTY_CAGE, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(SOUL_CAGE, RenderLayer.getCutout());
     }
 }

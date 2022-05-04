@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "hanging=false": {
+      "model": "soulsandsorcery:block/soul_cage"
+    },
+    "hanging=true": {
+      "model": "soulsandsorcery:block/soul_cage_hanging"
+    }
+  }
+}
