@@ -1,10 +1,7 @@
 package com.exdrill.soulsandsorcery.registry;
 
 import com.exdrill.soulsandsorcery.SoulsAndSorcery;
-import com.exdrill.soulsandsorcery.item.EvocationTomeItem;
-import com.exdrill.soulsandsorcery.item.PetrifiedArtifactItem;
-import com.exdrill.soulsandsorcery.item.SoulWeaponItem;
-import com.exdrill.soulsandsorcery.item.WindcallingHornItem;
+import com.exdrill.soulsandsorcery.item.*;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -25,7 +22,7 @@ public class ModItems {
     public static final Item COLLAR_OF_BONDING = new Item(new Item.Settings().group(ItemGroup.COMBAT).maxCount(1).rarity(Rarity.UNCOMMON));
     public static final SpawnEggItem DEPARTED_WOLF_SPAWN_EGG = new SpawnEggItem(ModEntityType.DEPARTED_WOLF, 0x1a1c1f, 0x58defc, new Item.Settings().group(ItemGroup.MISC));
     public static final BlockItem SOUL_CAGE = new BlockItem(ModBlocks.SOUL_CAGE, new Item.Settings().group(ItemGroup.DECORATIONS));
-
+    public static final BoltSlasherItem BOLT_SLASHER = new BoltSlasherItem(5, -1, 1, 1, new Item.Settings().group(ItemGroup.COMBAT));
     // Item Registry
     public static void register() {
         Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "haunted_sickle"), HAUNTED_SICKLE);
@@ -36,5 +33,6 @@ public class ModItems {
         Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "collar_of_bonding"), COLLAR_OF_BONDING);
         Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "departed_wolf_spawn_egg"), DEPARTED_WOLF_SPAWN_EGG);
         Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "soul_cage"), SOUL_CAGE);
+        Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "bolt_slasher"), BOLT_SLASHER);
     }
 }
