@@ -7,7 +7,6 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
@@ -15,6 +14,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -29,11 +29,14 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.ToIntFunction;
+
 public class SoulCageBlock extends BlockWithEntity {
 
     public static final BooleanProperty HANGING;
     private static final VoxelShape NORMAL_SHAPE;
     private static final VoxelShape HANGING_SHAPE;
+
 
     public SoulCageBlock(Settings settings) {
         super(settings);
@@ -64,13 +67,12 @@ public class SoulCageBlock extends BlockWithEntity {
         if (itemStack.isEmpty() && blockEntity instanceof SoulCageBlockEntity rustyCage && rustyCage.getSoulsStored() < 20 && ((SoulComponents) player).getSouls() > 0 && !player.isSneaking()) {
             rustyCage.addStoredSouls(1);
             ((SoulComponents) player).addSouls(-1);
-            world.playSound(player, pos, SoundEvents.BLOCK_RESPAWN_ANCHOR_CHARGE, SoundCategory.BLOCKS, 0.5F, 1.0F);
             world.playSound(player, pos, SoundEvents.PARTICLE_SOUL_ESCAPE, SoundCategory.BLOCKS, 0.5F, 1.0F);
             return ActionResult.SUCCESS;
         } else if (itemStack.isEmpty() && blockEntity instanceof SoulCageBlockEntity rustyCage && ((SoulComponents) player).getSouls() < 20 && player.isSneaking() && rustyCage.getSoulsStored() > 0) {
             rustyCage.addStoredSouls(-1);
             ((SoulComponents) player).addSouls(1);
-            world.playSound(player, pos, SoundEvents.BLOCK_RESPAWN_ANCHOR_DEPLETE, SoundCategory.BLOCKS, 0.5F, 1.0F);
+            world.playSound(player, pos, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.5F, 1.0F);
             return ActionResult.SUCCESS;
         } else {
             return ActionResult.FAIL;
@@ -107,13 +109,13 @@ public class SoulCageBlock extends BlockWithEntity {
     }
 
     @Override
-    public void onBroken(WorldAccess world, BlockPos pos, BlockState state) {
+    public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (blockEntity instanceof SoulCageBlockEntity rustyCage && rustyCage.getSoulsStored() > 0) {
             world.addParticle(ParticleTypes.SOUL, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0, 0, 0);
+            world.playSound(player, pos, SoundEvents.PARTICLE_SOUL_ESCAPE, SoundCategory.BLOCKS, 0.5F, 1.0F);
         }
-        world.playSound(null, pos, SoundEvents.PARTICLE_SOUL_ESCAPE, SoundCategory.BLOCKS, 0.5F, 1.0F);
-        super.onBroken(world, pos, state);
+        super.onBreak(world, pos, state, player);
     }
 
     @Override
@@ -124,6 +126,8 @@ public class SoulCageBlock extends BlockWithEntity {
     public boolean canPathfindThrough(BlockState state, BlockView world, BlockPos pos, NavigationType type) {
         return false;
     }
+
+
 
     static {
         HANGING = Properties.HANGING;

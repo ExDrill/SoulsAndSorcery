@@ -2,6 +2,7 @@ package com.exdrill.soulsandsorcery.registry;
 
 import com.exdrill.soulsandsorcery.SoulsAndSorcery;
 import com.exdrill.soulsandsorcery.block.SoulCageBlock;
+import com.exdrill.soulsandsorcery.block.entity.SoulCageBlockEntity;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.BlockState;
@@ -18,6 +19,10 @@ public class ModBlocks {
 
     private static boolean never(BlockState state, BlockView world, BlockPos pos) {
         return false;
+    }
+
+    private static int soulCageLightLevel(SoulCageBlockEntity blockEntity, BlockPos pos) {
+        return blockEntity.getSoulsStored();
     }
 
     public static final GlassBlock PETRIFIED_GLASS = new GlassBlock(FabricBlockSettings.of(Material.GLASS).nonOpaque().sounds(ModSounds.PETRIFIED_GLASS).strength(0.3F).suffocates(ModBlocks::never).blockVision(ModBlocks::never).solidBlock(ModBlocks::never));

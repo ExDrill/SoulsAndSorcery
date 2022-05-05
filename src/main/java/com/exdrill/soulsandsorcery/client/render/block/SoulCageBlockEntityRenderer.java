@@ -38,6 +38,7 @@ public class SoulCageBlockEntityRenderer implements BlockEntityRenderer<SoulCage
     }
 
 
+
     @Override
     public void render(SoulCageBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         EntityRenderDispatcher dispatcher = MinecraftClient.getInstance().getEntityRenderDispatcher();
@@ -47,21 +48,7 @@ public class SoulCageBlockEntityRenderer implements BlockEntityRenderer<SoulCage
         this.soul.pivotX = 0.0F;
         this.soul.pivotY = 2.0F;
         this.soul.visible = entity.getSoulsStored() > 0;
-        float scale = 0;
-        if (entity.getSoulsStored() >= 0 && entity.getSoulsStored() < 5) {
-            scale = 0.5F;
-        } else
-        if (entity.getSoulsStored() >= 5 && entity.getSoulsStored() < 10) {
-            scale = 0.75F;
-        } else
-        if (entity.getSoulsStored() >= 10 && entity.getSoulsStored() < 15) {
-            scale = 1.0F;
-        } else
-        if (entity.getSoulsStored() >= 15 && entity.getSoulsStored() < 20) {
-            scale = 1.25F;
-        } else {
-            scale = 1F;
-        }
+        float scale = (float) (0.15F + (entity.getSoulsStored() * 0.025F) + Math.cos(tickDelta * 0.1F) * 0.1F);
         matrices.scale(scale, scale, scale);
         matrices.multiply(dispatcher.getRotation());
         matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(0F));
