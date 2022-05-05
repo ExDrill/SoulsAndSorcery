@@ -1,7 +1,6 @@
 package com.exdrill.soulsandsorcery.entity;
 
 import com.exdrill.soulsandsorcery.registry.ModSounds;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
@@ -18,6 +17,7 @@ import net.minecraft.entity.mob.AbstractPiglinEntity;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.ZombifiedPiglinEntity;
+import net.minecraft.entity.mob.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundEvent;
@@ -26,6 +26,7 @@ import net.minecraft.util.math.random.AbstractRandom;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.*;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
@@ -34,15 +35,14 @@ import java.util.UUID;
 public class DepartedWolfEntity extends HostileEntity {
 
     private static final UUID SOUL_SPEED_BOOST_ID = UUID.fromString("87f46a96-686f-4796-b035-22e16ee9e038");
-
     private static final TrackedData<Integer> ANIMATION_FRAME = DataTracker.registerData(DepartedWolfEntity.class, TrackedDataHandlerRegistry.INTEGER);
-
 
     public DepartedWolfEntity(EntityType<? extends DepartedWolfEntity> entityType, World world) {
         super(entityType, world);
         this.experiencePoints = 5;
         this.setPathfindingPenalty(PathNodeType.WATER, -1.0F);
     }
+
 
     @Override
     public boolean isFireImmune() {
@@ -59,6 +59,7 @@ public class DepartedWolfEntity extends HostileEntity {
         this.goalSelector.add(5, new ActiveTargetGoal<>(this, AbstractPiglinEntity.class, true));
         this.targetSelector.add(1, (new RevengeGoal(this, new Class[0])).setGroupRevenge(new Class[0]));
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
+        this.goalSelector.add(3, new FleeEntityGoal<>(this, CreeperEntity.class, 10.0F, 1.0D, 1.2D));
         this.goalSelector.add(8, new LookAroundGoal(this));
         super.initGoals();
     }
@@ -128,6 +129,8 @@ public class DepartedWolfEntity extends HostileEntity {
         return this.dataTracker.get(ANIMATION_FRAME);
     }
 
+
+
     @Override
     public void tick() {
         if (age % 2 == 0) {
@@ -135,6 +138,7 @@ public class DepartedWolfEntity extends HostileEntity {
         }
         super.tick();
     }
+
 
     @Override
     public boolean shouldDisplaySoulSpeedEffects() {
@@ -153,8 +157,6 @@ public class DepartedWolfEntity extends HostileEntity {
     }
 
 
-
-
     public static DefaultAttributeContainer.Builder createDepartedWolfEntity() {
         return HostileEntity.createMobAttributes()
                 .add(EntityAttributes.GENERIC_MAX_HEALTH, 20.0D)
@@ -162,6 +164,4 @@ public class DepartedWolfEntity extends HostileEntity {
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 5.0D);
 
     }
-
-
 }

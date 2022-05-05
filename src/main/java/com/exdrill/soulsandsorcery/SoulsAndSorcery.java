@@ -1,10 +1,7 @@
 package com.exdrill.soulsandsorcery;
 
 import com.exdrill.soulsandsorcery.entity.DepartedWolfEntity;
-import com.exdrill.soulsandsorcery.registry.ModBlocks;
-import com.exdrill.soulsandsorcery.registry.ModEntityType;
-import com.exdrill.soulsandsorcery.registry.ModItems;
-import com.exdrill.soulsandsorcery.registry.ModSounds;
+import com.exdrill.soulsandsorcery.registry.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
@@ -39,6 +36,7 @@ public class SoulsAndSorcery implements ModInitializer {
 		ModSounds.register();
 		ModBlocks.register();
 		ModEntityType.register();
+		ModBlockEntityType.register();
 
 		BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.SOUL_SAND_VALLEY), SpawnGroup.MONSTER, ModEntityType.DEPARTED_WOLF, 2, 3, 4);
 		SpawnRestrictionAccessor.callRegister(ModEntityType.DEPARTED_WOLF, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, DepartedWolfEntity::canSpawn);
