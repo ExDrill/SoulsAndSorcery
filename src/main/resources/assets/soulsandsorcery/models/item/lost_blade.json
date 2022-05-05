@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "soulsandsorcery:item/bolt_slasher"
+    "layer0": "soulsandsorcery:item/lost_blade"
   }
 }

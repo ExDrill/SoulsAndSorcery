@@ -41,6 +41,7 @@ public class SoulsAndSorcery implements ModInitializer {
 		BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.SOUL_SAND_VALLEY), SpawnGroup.MONSTER, ModEntityType.DEPARTED_WOLF, 2, 3, 4);
 		SpawnRestrictionAccessor.callRegister(ModEntityType.DEPARTED_WOLF, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, DepartedWolfEntity::canSpawn);
 
+
 		LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
 			if (NETHER_FORTRESS_LOOT.equals(id)) {
 				FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()

@@ -9,17 +9,16 @@ import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import static com.exdrill.soulsandsorcery.item.SoulWeaponItem.SOUL_GATHERING_MODIFIER_ID;
 
-public class BoltSlasherItem extends AbstractArtifactItem {
+public class LostBladeItem extends AbstractArtifactItem {
     private final int soulUsage;
     private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
 
-    public BoltSlasherItem( float attackDamage, float attackSpeed, float soulGathering, int soulUsage, Settings settings) {
+    public LostBladeItem(float attackDamage, float attackSpeed, float soulGathering, int soulUsage, Settings settings) {
         super(soulUsage, settings);
         this.soulUsage = soulUsage;
         ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
