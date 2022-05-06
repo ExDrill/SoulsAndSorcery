@@ -22,7 +22,7 @@ public class ModItems {
     public static final Item COLLAR_OF_BONDING = new Item(new Item.Settings().group(ItemGroup.COMBAT).maxCount(1).rarity(Rarity.UNCOMMON));
     public static final SpawnEggItem DEPARTED_WOLF_SPAWN_EGG = new SpawnEggItem(ModEntityType.DEPARTED_WOLF, 0x1a1c1f, 0x58defc, new Item.Settings().group(ItemGroup.MISC));
     public static final BlockItem SOUL_CAGE = new BlockItem(ModBlocks.SOUL_CAGE, new Item.Settings().group(ItemGroup.DECORATIONS));
-    public static final LostBladeItem LOST_BLADE = new LostBladeItem(5, -2, 1, 1, new Item.Settings().group(ItemGroup.COMBAT).maxDamage(512));
+    public static final LostBladeItem LOST_BLADE = new LostBladeItem(4, -2.2F, 1, 1, new Item.Settings().group(ItemGroup.COMBAT).maxDamage(512));
     // Item Registry
     public static void register() {
         Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "haunted_sickle"), HAUNTED_SICKLE);
