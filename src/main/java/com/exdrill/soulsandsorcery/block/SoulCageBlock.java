@@ -2,8 +2,11 @@ package com.exdrill.soulsandsorcery.block;
 
 import com.exdrill.soulsandsorcery.access.SoulComponents;
 import com.exdrill.soulsandsorcery.block.entity.SoulCageBlockEntity;
+import com.exdrill.soulsandsorcery.registry.ModBlockEntityType;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -128,6 +131,11 @@ public class SoulCageBlock extends BlockWithEntity {
     }
 
 
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return checkType(type, ModBlockEntityType.SOUL_CAGE, SoulCageBlockEntity::tick);
+    }
 
     static {
         HANGING = Properties.HANGING;

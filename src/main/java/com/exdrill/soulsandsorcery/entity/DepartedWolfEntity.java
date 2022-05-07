@@ -56,6 +56,7 @@ public class DepartedWolfEntity extends HostileEntity {
         super.initGoals();
     }
 
+
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
         return ModSounds.ENTITY_DEPARTED_WOLF_HURT_EVENT;
