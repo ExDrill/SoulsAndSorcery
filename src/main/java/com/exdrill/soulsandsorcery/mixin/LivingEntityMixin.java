@@ -128,8 +128,7 @@ public abstract class LivingEntityMixin extends Entity implements SoulComponents
                 ((ServerWorld)world).spawnParticles(ParticleTypes.SOUL, entity.getX(), entity.getY() + (entity.getStandingEyeHeight() * 0.7), entity.getZ(), 1, 0, 0, 0, 0);
 
                 if (adversary.getStatusEffect(SoulsAndSorcery.SOUL_HEALING) != null) {
-                    int healAmount = Objects.requireNonNull(adversary.getStatusEffect(SoulsAndSorcery.SOUL_HEALING)).getAmplifier() + 1;
-                    adversary.heal(healAmount * 1F);
+                    adversary.heal(1 + getSoulGathering);
                 }
             }
 

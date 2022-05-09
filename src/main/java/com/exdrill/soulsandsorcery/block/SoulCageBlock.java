@@ -17,7 +17,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -31,8 +30,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.function.ToIntFunction;
 
 public class SoulCageBlock extends BlockWithEntity {
 
@@ -134,7 +131,7 @@ public class SoulCageBlock extends BlockWithEntity {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, ModBlockEntityType.SOUL_CAGE, SoulCageBlockEntity::tick);
+        return checkType(type, ModBlockEntityType.SOUL_CAGE, (world1, pos, state1, entity) -> SoulCageBlockEntity.tick(world1, pos, entity));
     }
 
     static {

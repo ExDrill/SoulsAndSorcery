@@ -41,7 +41,7 @@ public class SoulCageBlockEntity extends BlockEntity {
     }
 
 
-    public static void tick(World world, BlockPos pos, BlockState state, SoulCageBlockEntity entity) {
+    public static void tick(World world, BlockPos pos, SoulCageBlockEntity entity) {
         if (entity.soulsStored == 20) {
             Box box = new Box(pos).expand(10);
             world.getNonSpectatingEntities(PlayerEntity.class, box).forEach(player -> {
