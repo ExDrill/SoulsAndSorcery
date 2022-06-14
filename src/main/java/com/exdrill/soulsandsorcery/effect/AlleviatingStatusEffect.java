@@ -3,9 +3,9 @@ package com.exdrill.soulsandsorcery.effect;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 
-public class SoulHealingStatusEffect extends StatusEffect {
+public class AlleviatingStatusEffect extends StatusEffect {
 
-    public SoulHealingStatusEffect() {
+    public AlleviatingStatusEffect() {
         super(StatusEffectCategory.BENEFICIAL, 0x5cd8f7);
     }
 

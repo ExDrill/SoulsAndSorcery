@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin extends DrawableHelper {
 
-    private static final Identifier LARGE_SOUL_BAR = new Identifier(SoulsAndSorcery.MODID, "textures/gui/large_soul_bar.png");
+    private static final Identifier SOUL_SPHERE = new Identifier(SoulsAndSorcery.MODID, "textures/gui/soul_sphere.png");
 
     @Shadow
     private int scaledHeight;
@@ -33,35 +33,43 @@ public abstract class InGameHudMixin extends DrawableHelper {
 
     @Inject(method = "render", at = @At("HEAD"))
     private void renderSouls(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
-        int i = this.scaledWidth / 2 - 180;
-        renderSoulBar(matrices, i);
+        if (!this.client.options.hudHidden) {
+            int i = this.scaledWidth / 2 - 180;
+            renderSoulBar(matrices, i);
+        }
+
     }
 
-
-
     public void renderSoulBar(MatrixStack matrices, int x) {
-        if (this.client.player != null && !this.client.player.isCreative()) {
-            if (((SoulComponents)this.client.player).canSoulHarvest()) {
-                PlayerEntity player = this.client.player;
-                this.client.getProfiler().push("soulBar");
-                RenderSystem.setShader(GameRenderer::getPositionTexShader);
-                RenderSystem.setShaderTexture(0, LARGE_SOUL_BAR);
-                float f = ((SoulComponents) player).getSouls();
-                int j = (int) ((int) f * 2.5);
-                int k = this.scaledHeight - 20;
-                drawTexture(matrices, x, k, 0, 0, 50, 18, 50, 36);
+        if (this.client.player != null && !this.client.player.isCreative() && !this.client.player.isSpectator()) {
 
-                if (f > 0) {
-                    drawTexture(matrices, x , k, 0, 18, j, 18, 50, 36);
+            if (((SoulComponents)this.client.player).getSouls() > 0) {
+
+                PlayerEntity player = this.client.player;
+
+                int soulAmount = ((SoulComponents) player).getSouls();
+                int activeHeight = (int) (soulAmount * 0.95);
+                int height = this.scaledHeight - 20;
+
+                this.client.getProfiler().push("soulSphere");
+                RenderSystem.setShader(GameRenderer::getPositionTexShader);
+                RenderSystem.setShaderTexture(0, SOUL_SPHERE);
+
+                drawTexture(matrices, x, height - 1, 0, 0, 19, 19, 19, 38);
+
+                if (soulAmount > 0) {
+                    drawTexture(matrices, x, height - 1, 0, 19, 19, activeHeight, 19, 38);
                 }
+                this.client.getProfiler().pop();
+
+                // Soul Text
+                this.client.getProfiler().push("soulText");
+                int displayX = x + 7;
+                int displayY = height + 5;
+                this.client.textRenderer.draw(matrices, String.valueOf(soulAmount), displayX, displayY, 0xFFFFFF);
                 this.client.getProfiler().pop();
             }
         }
-    }
-
-    @Shadow
-    private PlayerEntity getCameraPlayer() {
-        return null;
     }
 
 

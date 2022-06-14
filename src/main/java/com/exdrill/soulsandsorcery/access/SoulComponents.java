@@ -5,10 +5,6 @@ public interface SoulComponents {
 
     int getSouls();
 
-    boolean canSoulHarvest();
-
-    void setSoulHarvester(boolean soulHarvester);
-
     void setSouls(int soulCount);
 
 }

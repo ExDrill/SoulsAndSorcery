@@ -42,7 +42,7 @@ public class SoulCageBlockEntity extends BlockEntity {
         if (entity.soulsStored == 20) {
             Box box = new Box(pos).expand(10);
             world.getNonSpectatingEntities(PlayerEntity.class, box).forEach(player -> {
-               player.addStatusEffect(new StatusEffectInstance(SoulsAndSorcery.SOUL_HEALING, 200, 0, true,true));
+               player.addStatusEffect(new StatusEffectInstance(SoulsAndSorcery.ALLEVIATING, 200, 0, true,true));
             });
         }
     }

@@ -10,7 +10,8 @@
   "client": [
     "client.InGameHudMixin",
     "client.PlayerEntityModelMixin",
-    "client.WolfEntityRendererMixin"
+    "client.WolfEntityRendererMixin",
+    "client.WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
