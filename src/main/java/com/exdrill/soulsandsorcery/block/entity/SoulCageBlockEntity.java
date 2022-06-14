@@ -6,19 +6,14 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.listener.ServerPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
 public class SoulCageBlockEntity extends BlockEntity {
 
-
-
     public int soulsStored;
-
     public SoulCageBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntityType.SOUL_CAGE, pos, state);
     }
