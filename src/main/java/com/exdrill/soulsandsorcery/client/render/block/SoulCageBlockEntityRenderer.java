@@ -14,6 +14,7 @@ import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
 
 public class SoulCageBlockEntityRenderer implements BlockEntityRenderer<SoulCageBlockEntity> {
@@ -48,7 +49,7 @@ public class SoulCageBlockEntityRenderer implements BlockEntityRenderer<SoulCage
         this.soul.pivotX = 0.0F;
         this.soul.pivotY = 2.0F;
         this.soul.visible = entity.getSoulsStored() > 0;
-        float scale = (float) (0.15F + (entity.getSoulsStored() * 0.025F) + Math.cos(tickDelta * 0.1F) * 0.1F);
+        float scale = 0.15F + (entity.getSoulsStored() * 0.025F);
         matrices.scale(scale, scale, scale);
         matrices.multiply(dispatcher.getRotation());
         matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(0F));

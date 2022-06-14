@@ -22,7 +22,7 @@ public class ModItems {
     public static final Item COLLAR_OF_BONDING = new Item(new Item.Settings().group(ItemGroup.COMBAT).maxCount(1).rarity(Rarity.UNCOMMON));
     public static final SpawnEggItem DEPARTED_WOLF_SPAWN_EGG = new SpawnEggItem(ModEntityType.DEPARTED_WOLF, 0x1a1c1f, 0x58defc, new Item.Settings().group(ItemGroup.MISC));
     public static final BlockItem SOUL_CAGE = new BlockItem(ModBlocks.SOUL_CAGE, new Item.Settings().group(ItemGroup.DECORATIONS));
-    public static final BoltSlasherItem BOLT_SLASHER = new BoltSlasherItem(5, -1, 1, 1, new Item.Settings().group(ItemGroup.COMBAT));
+    public static final LostBladeItem LOST_BLADE = new LostBladeItem(4, -2.2F, 1, 1, new Item.Settings().group(ItemGroup.COMBAT).maxDamage(512));
     // Item Registry
     public static void register() {
         Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "haunted_sickle"), HAUNTED_SICKLE);
@@ -33,6 +33,6 @@ public class ModItems {
         Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "collar_of_bonding"), COLLAR_OF_BONDING);
         Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "departed_wolf_spawn_egg"), DEPARTED_WOLF_SPAWN_EGG);
         Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "soul_cage"), SOUL_CAGE);
-        Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "bolt_slasher"), BOLT_SLASHER);
+        Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "lost_blade"), LOST_BLADE);
     }
 }

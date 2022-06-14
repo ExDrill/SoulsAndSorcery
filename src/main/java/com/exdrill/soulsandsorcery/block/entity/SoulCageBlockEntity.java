@@ -1,13 +1,18 @@
 package com.exdrill.soulsandsorcery.block.entity;
 
+import com.exdrill.soulsandsorcery.SoulsAndSorcery;
 import com.exdrill.soulsandsorcery.registry.ModBlockEntityType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
@@ -21,21 +26,25 @@ public class SoulCageBlockEntity extends BlockEntity {
 
     @Override
     public void writeNbt(NbtCompound nbt) {
-
         nbt.putInt("SoulsStored", soulsStored);
-        System.out.println("Writing Souls Stored: "+ soulsStored);
-        System.out.println("-------------------------------");
         this.markDirty();
         super.writeNbt(nbt);
-
     }
 
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
-        System.out.println("Reading Souls Stored: "+ soulsStored);
-        System.out.println("-------------------------------");
         soulsStored = nbt.getInt("SoulsStored");
+    }
+
+
+    public static void tick(World world, BlockPos pos, SoulCageBlockEntity entity) {
+        if (entity.soulsStored == 20) {
+            Box box = new Box(pos).expand(10);
+            world.getNonSpectatingEntities(PlayerEntity.class, box).forEach(player -> {
+               player.addStatusEffect(new StatusEffectInstance(SoulsAndSorcery.SOUL_HEALING, 200, 0, true,true));
+            });
+        }
     }
 
 

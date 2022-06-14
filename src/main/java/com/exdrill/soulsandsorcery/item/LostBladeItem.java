@@ -4,22 +4,26 @@ import com.exdrill.soulsandsorcery.SoulsAndSorcery;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.Material;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import static com.exdrill.soulsandsorcery.item.SoulWeaponItem.SOUL_GATHERING_MODIFIER_ID;
 
-public class BoltSlasherItem extends AbstractArtifactItem {
+public class LostBladeItem extends AbstractArtifactItem {
     private final int soulUsage;
     private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
 
-    public BoltSlasherItem( float attackDamage, float attackSpeed, float soulGathering, int soulUsage, Settings settings) {
+    public LostBladeItem(float attackDamage, float attackSpeed, float soulGathering, int soulUsage, Settings settings) {
         super(soulUsage, settings);
         this.soulUsage = soulUsage;
         ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
@@ -33,6 +37,32 @@ public class BoltSlasherItem extends AbstractArtifactItem {
     }
     public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
         return slot == EquipmentSlot.MAINHAND ? this.attributeModifiers : super.getAttributeModifiers(slot);
+    }
+
+    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
+        return true;
+    }
+
+    public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
+        if (state.getHardness(world, pos) != 0.0F) {
+            stack.damage(2, miner, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
+        }
+
+        return true;
+    }
+
+    public boolean isSuitableFor(BlockState state) {
+        return state.isOf(Blocks.COBWEB);
+    }
+
+    public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
+        if (state.isOf(Blocks.COBWEB)) {
+            return 100.0F;
+        } else {
+            Material material = state.getMaterial();
+            return material != Material.PLANT && material != Material.REPLACEABLE_PLANT && !state.isIn(BlockTags.LEAVES) && material != Material.GOURD ? 1.0F : 4.5F;
+        }
     }
 
 }
