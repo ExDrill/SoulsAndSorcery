@@ -1,9 +1,11 @@
 package com.exdrill.soulsandsorcery.entity;
 
 import com.exdrill.soulsandsorcery.registry.ModSounds;
+import com.mojang.serialization.Dynamic;
 import net.fabricmc.fabric.impl.object.builder.FabricEntityType;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.brain.Brain;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.ai.pathing.PathNodeType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -58,15 +60,12 @@ public class DepartedWolfEntity extends HostileEntity {
         this.goalSelector.add(5, new MeleeAttackGoal(this, 1.0D, true));
         this.goalSelector.add(4, new ActiveTargetGoal<>(this, PlayerEntity.class, false));
         this.goalSelector.add(5, new ActiveTargetGoal<>(this, AbstractPiglinEntity.class, true));
-        this.targetSelector.add(1, (new RevengeGoal(this, new Class[0])).setGroupRevenge(new Class[0]));
+        this.targetSelector.add(1, (new RevengeGoal(this)).setGroupRevenge());
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(3, new FleeEntityGoal<>(this, CreeperEntity.class, 10.0F, 1.0D, 1.2D));
         this.goalSelector.add(8, new LookAroundGoal(this));
         super.initGoals();
     }
-
-
-
 
 
     @Override

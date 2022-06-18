@@ -26,12 +26,13 @@ public class SoulsAndSorcery implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		ModItems.register();
-		Registry.register(Registry.ATTRIBUTE, new Identifier(SoulsAndSorcery.MODID, "generic.soul_gathering"), GENERIC_SOUL_GATHERING);
+		Registry.register(Registry.ATTRIBUTE, new Identifier(MODID, "generic.soul_gathering"), GENERIC_SOUL_GATHERING);
 		ModSounds.register();
 		ModBlocks.register();
 		ModEntityType.register();
 		ModBlockEntityType.register();
-		Registry.register(Registry.STATUS_EFFECT, new Identifier(SoulsAndSorcery.MODID, "alleviating"), ALLEVIATING);
+
+		Registry.register(Registry.STATUS_EFFECT, new Identifier(MODID, "alleviating"), ALLEVIATING);
 
 		BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.SOUL_SAND_VALLEY), SpawnGroup.MONSTER, ModEntityType.DEPARTED_WOLF, 2, 3, 4);
 		SpawnRestrictionAccessor.callRegister(ModEntityType.DEPARTED_WOLF, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, DepartedWolfEntity::canSpawn);
