@@ -1,8 +1,8 @@
 package com.exdrill.soulsandsorcery;
 
 import com.exdrill.soulsandsorcery.client.render.block.SoulCageBlockEntityRenderer;
-import com.exdrill.soulsandsorcery.client.render.entity.DepartedWolfEntityRenderer;
-import com.exdrill.soulsandsorcery.client.render.entity.model.DepartedWolfEntityModel;
+import com.exdrill.soulsandsorcery.client.render.entity.SearedHoundEntityRenderer;
+import com.exdrill.soulsandsorcery.client.render.entity.model.SearedHoundEntityModel;
 import com.exdrill.soulsandsorcery.registry.ModBlockEntityType;
 import com.exdrill.soulsandsorcery.registry.ModBlocks;
 import com.exdrill.soulsandsorcery.registry.ModEntityType;
@@ -27,8 +27,9 @@ public class SoulsAndSorceryClient extends DrawableHelper implements ClientModIn
         ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) ->
                 registry.register(new Identifier(SoulsAndSorcery.MODID, "entity/soul_cage/soul")));
 
-        EntityRendererRegistry.register(ModEntityType.DEPARTED_WOLF, DepartedWolfEntityRenderer::new);
-        EntityModelLayerRegistry.registerModelLayer(DepartedWolfEntityModel.LAYER_LOCATION, DepartedWolfEntityModel::getTexturedModelData);
+        EntityRendererRegistry.register(ModEntityType.SEARED_HOUND, SearedHoundEntityRenderer::new);
+        EntityModelLayerRegistry.registerModelLayer(SearedHoundEntityModel.LAYER_LOCATION, SearedHoundEntityModel::createBodyLayer);
+
         BlockEntityRendererRegistry.register(ModBlockEntityType.SOUL_CAGE, SoulCageBlockEntityRenderer::new);
         EntityModelLayerRegistry.registerModelLayer(SoulCageBlockEntityRenderer.LAYER_LOCATION, SoulCageBlockEntityRenderer::texturedModelData);
     }

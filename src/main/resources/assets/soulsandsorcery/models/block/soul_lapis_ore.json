@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "soulsandsorcery:block/soul_lapis_ore"
+  }
+}

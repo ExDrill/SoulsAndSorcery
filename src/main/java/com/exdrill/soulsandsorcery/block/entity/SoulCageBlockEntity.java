@@ -41,18 +41,14 @@ public class SoulCageBlockEntity extends BlockEntity {
     public static void tick(World world, BlockPos pos, SoulCageBlockEntity entity) {
         if (entity.soulsStored == 20) {
             Box box = new Box(pos).expand(10);
-            world.getNonSpectatingEntities(PlayerEntity.class, box).forEach(player -> {
-               player.addStatusEffect(new StatusEffectInstance(SoulsAndSorcery.ALLEVIATING, 200, 0, true,true));
-            });
+            world.getNonSpectatingEntities(PlayerEntity.class, box).forEach(player -> player.addStatusEffect(new StatusEffectInstance(SoulsAndSorcery.ALLEVIATING, 200, 0, true,true)));
         }
     }
-
 
     @Override
     public NbtCompound toInitialChunkDataNbt() {
         return createNbt();
     }
-
 
     @Nullable
     @Override

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "charged=false": {
+      "model": "soulsandsorcery:block/soul_soil_bricks"
+    },
+    "charged=true": {
+      "model": "soulsandsorcery:block/charged_soul_soil_bricks"
+    }
+  }
+}
