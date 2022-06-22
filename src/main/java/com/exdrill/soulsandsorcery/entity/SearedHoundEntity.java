@@ -334,7 +334,9 @@ public class SearedHoundEntity extends HostileEntity {
                 if (!world.isClient) {
                     LootTable lootTable = Objects.requireNonNull(this.entity.world.getServer()).getLootManager().getTable(SoulsAndSorcery.DUG_UP_ITEMS_GAMEPLAY);
                     net.minecraft.loot.context.LootContext.Builder builder = (new net.minecraft.loot.context.LootContext.Builder((ServerWorld)this.entity.world)).parameter(LootContextParameters.ORIGIN, this.entity.getPos()).parameter(LootContextParameters.THIS_ENTITY, this.entity).random(random);
-                    List<ItemStack> list = lootTable.generateLoot(builder.build(LootContextTypes.GENERIC));
+                    List<ItemStack> list = lootTable.generateLoot(builder.build(LootContextTypes.GIFT));
+
+
 
                     for (ItemStack itemStack : list) {
                         ItemEntity itemEntity = new ItemEntity(world, entity.getX(), entity.getY(), entity.getZ(), itemStack);
