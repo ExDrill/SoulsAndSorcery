@@ -25,6 +25,7 @@ public class ModBlocks {
     public static final SoulCageBlock SOUL_CAGE = new SoulCageBlock(FabricBlockSettings.of(Material.METAL).nonOpaque().sounds(BlockSoundGroup.CHAIN).strength(5.0F, 6.0F).suffocates(ModBlocks::never).blockVision(ModBlocks::never).solidBlock(ModBlocks::never));
     public static final SoulSoilBricksBlock SOUL_SOIL_BRICKS = new SoulSoilBricksBlock(FabricBlockSettings.of(Material.SOIL).sounds(BlockSoundGroup.SOUL_SOIL).strength(0.5F).luminance(SoulSoilBricksBlock.LIGHT_STATE));
     public static final OreBlock SOUL_LAPIS_ORE = new OreBlock(FabricBlockSettings.of(Material.SOIL).sounds(ModBlockSounds.SOUL_ORE).strength(3.0F, 3.0F), UniformIntProvider.create(1, 3));
+    public static final PaneBlock BONE_COLUMNS = new PaneBlock(FabricBlockSettings.of(Material.STONE).mapColor(MapColor.PALE_YELLOW).strength(1.5F).sounds(BlockSoundGroup.BONE).nonOpaque());
 
 
     public static void register() {
@@ -32,10 +33,13 @@ public class ModBlocks {
         Registry.register(Registry.BLOCK, new Identifier(SoulsAndSorcery.MODID, "soul_cage"), SOUL_CAGE);
         Registry.register(Registry.BLOCK, new Identifier(SoulsAndSorcery.MODID, "soul_soil_bricks"), SOUL_SOIL_BRICKS);
         Registry.register(Registry.BLOCK, new Identifier(SoulsAndSorcery.MODID, "soul_lapis_ore"), SOUL_LAPIS_ORE);
+        Registry.register(Registry.BLOCK, new Identifier(SoulsAndSorcery.MODID, "bone_columns"), BONE_COLUMNS);
     }
 
     public static void registerClient() {
         BlockRenderLayerMap.INSTANCE.putBlock(PETRIFIED_GLASS, RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(SOUL_CAGE, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(BONE_COLUMNS, RenderLayer.getCutoutMipped());
+
     }
 }

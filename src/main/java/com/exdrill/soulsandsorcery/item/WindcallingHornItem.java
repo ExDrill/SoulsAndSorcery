@@ -7,7 +7,6 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -18,7 +17,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class WindcallingHornItem extends AbstractArtifactItem {
+public class WindcallingHornItem extends ArtifactItem {
     private final int soulUsage;
     public WindcallingHornItem(int soulUsage, Settings settings) {
         super(soulUsage, settings);
@@ -44,9 +43,7 @@ public class WindcallingHornItem extends AbstractArtifactItem {
             for(int i = 0; i < 40; ++i) {
 
                 double d = user.getRandom().nextGaussian() * 0.2D;
-                double e = user.getRandom().nextGaussian() * 0.2D;
-                double f = user.getRandom().nextGaussian() * 0.2D;
-                world.addParticle(ParticleTypes.POOF, vec3d.x, vec3d.y, vec3d.z, d, e, f);
+                world.addParticle(ParticleTypes.POOF, vec3d.x, vec3d.y, vec3d.z, d, d, d);
             }
 
             user.getItemCooldownManager().set(this, 200);

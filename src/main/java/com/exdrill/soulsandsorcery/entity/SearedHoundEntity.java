@@ -27,8 +27,12 @@ import net.minecraft.loot.LootTables;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.BlockStateParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -54,6 +58,7 @@ public class SearedHoundEntity extends HostileEntity {
     private static final TrackedData<Integer> FRIENDLY_DURATION = DataTracker.registerData(SearedHoundEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
     public final AnimationState runningAnimationState = new AnimationState();
+    public final AnimationState diggingAnimationState = new AnimationState();
 
 
     public SearedHoundEntity(EntityType<? extends SearedHoundEntity> entityType, World world) {
@@ -136,8 +141,8 @@ public class SearedHoundEntity extends HostileEntity {
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
         nbt.putInt("AnimationFrame", this.getCurrentFrame());
-        nbt.putInt("FriendlyCooldown", this.getDigCooldown());
-        nbt.putBoolean("FriendlyDuration", this.isFriendly());
+        nbt.putInt("DiggingCooldown", this.getDigCooldown());
+        nbt.putInt("FriendlyDuration", this.getFriendly());
 
     }
 
@@ -145,8 +150,8 @@ public class SearedHoundEntity extends HostileEntity {
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         this.setFrame(nbt.getInt("AnimationFrame"));
-        this.setDigCooldown(nbt.getInt("FriendlyCooldown"));
-        this.setFriendly(nbt.getInt("IsFriendly"));
+        this.setDigCooldown(nbt.getInt("DiggingCooldown"));
+        this.setFriendly(nbt.getInt("FriendlyDuration"));
     }
 
     public void setFrame(int variant) {
@@ -190,6 +195,12 @@ public class SearedHoundEntity extends HostileEntity {
             } else {
                 runningAnimationState.stop();
             }
+
+            if (this.isInPose(EntityPose.DIGGING)) {
+                diggingAnimationState.startIfNotRunning(this.age);
+            } else {
+                diggingAnimationState.stop();
+            }
         }
 
         if (this.getDigCooldown() > 0) {
@@ -210,6 +221,19 @@ public class SearedHoundEntity extends HostileEntity {
             return ActionResult.SUCCESS;
         }
         return ActionResult.FAIL;
+    }
+
+    @Override
+    public boolean hurtByWater() {
+        return true;
+    }
+
+    @Override
+    protected void applyDamage(DamageSource source, float amount) {
+        super.applyDamage(source, amount);
+        if (source.getAttacker() instanceof PlayerEntity) {
+            this.setFriendly(0);
+        }
     }
 
     @Override
@@ -236,6 +260,7 @@ public class SearedHoundEntity extends HostileEntity {
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 5.0D);
 
     }
+
 
     public static class SearedHoundActiveTargetGoal<T extends LivingEntity> extends ActiveTargetGoal<T> {
         private final SearedHoundEntity entity;
@@ -288,9 +313,6 @@ public class SearedHoundEntity extends HostileEntity {
             return null;
         }
 
-        private boolean hasReached() {
-            return entity.getBlockPos().equals(searchForBlock());
-        }
 
         @Override
         public boolean canStart() {
@@ -326,11 +348,14 @@ public class SearedHoundEntity extends HostileEntity {
 
 
 
-            if (counter % 5 == 0) {
+            if (counter % 3 == 0) {
                 System.out.println("Digging");
-                world.addBlockBreakParticles(entity.getBlockPos(), entity.getSteppingBlockState());
+                if (!world.isClient()) {
+                    ((ServerWorld)world).spawnParticles(new BlockStateParticleEffect(ParticleTypes.BLOCK, this.entity.getSteppingBlockState()), entity.getX(), entity.getY(), entity.getZ(), 5, 0, 0, 0, 1);
+                }
+                world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.BLOCK_SOUL_SOIL_HIT, SoundCategory.BLOCKS, 1.0F, 1.0F);
             }
-            if (counter >= 60) {
+            if (counter >= 30) {
                 if (!world.isClient) {
                     LootTable lootTable = Objects.requireNonNull(this.entity.world.getServer()).getLootManager().getTable(SoulsAndSorcery.DUG_UP_ITEMS_GAMEPLAY);
                     net.minecraft.loot.context.LootContext.Builder builder = (new net.minecraft.loot.context.LootContext.Builder((ServerWorld)this.entity.world)).parameter(LootContextParameters.ORIGIN, this.entity.getPos()).parameter(LootContextParameters.THIS_ENTITY, this.entity).random(random);

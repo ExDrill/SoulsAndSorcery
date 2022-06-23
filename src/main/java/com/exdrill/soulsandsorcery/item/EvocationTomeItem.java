@@ -18,7 +18,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 
-public class EvocationTomeItem extends AbstractArtifactItem {
+public class EvocationTomeItem extends ArtifactItem {
     private final int soulUsage;
 
     public EvocationTomeItem(int soulUsage, Settings settings) {

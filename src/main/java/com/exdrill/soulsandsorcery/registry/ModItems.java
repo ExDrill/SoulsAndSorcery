@@ -23,6 +23,7 @@ public class ModItems {
     public static final BlockItem SOUL_CAGE = new BlockItem(ModBlocks.SOUL_CAGE, new Item.Settings().group(ItemGroup.DECORATIONS));
     public static final BlockItem SOUL_SOIL_BRICKS = new BlockItem(ModBlocks.SOUL_SOIL_BRICKS, new Item.Settings().group(ItemGroup.BUILDING_BLOCKS));
     public static final BlockItem SOUL_LAPIS_ORE = new BlockItem(ModBlocks.SOUL_LAPIS_ORE, new Item.Settings().group(ItemGroup.BUILDING_BLOCKS));
+    public static final BlockItem BONE_COLUMNS = new BlockItem(ModBlocks.BONE_COLUMNS, new Item.Settings().group(ItemGroup.DECORATIONS));
 
     // Item Registry
     public static void register() {
@@ -35,5 +36,6 @@ public class ModItems {
         Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "soul_cage"), SOUL_CAGE);
         Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "soul_soil_bricks"), SOUL_SOIL_BRICKS);
         Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "soul_lapis_ore"), SOUL_LAPIS_ORE);
+        Registry.register(Registry.ITEM, new Identifier(SoulsAndSorcery.MODID, "bone_columns"), BONE_COLUMNS);
     }
 }

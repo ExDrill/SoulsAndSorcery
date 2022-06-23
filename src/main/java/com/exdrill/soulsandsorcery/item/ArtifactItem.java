@@ -10,10 +10,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class AbstractArtifactItem extends Item {
+public class ArtifactItem extends Item {
     private final int soulUsage;
 
-    public AbstractArtifactItem(int soulUsage, Settings settings) {
+    public ArtifactItem(int soulUsage, Settings settings) {
         super(settings);
         this.soulUsage = soulUsage;
     }

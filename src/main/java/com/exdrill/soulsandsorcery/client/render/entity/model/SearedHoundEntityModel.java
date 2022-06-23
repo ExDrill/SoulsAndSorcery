@@ -75,6 +75,7 @@ public class SearedHoundEntityModel<T extends HostileEntity> extends SinglePartE
         this.head.pitch = headPitch * 0.017453292F;
         this.head.yaw = headYaw * 0.017453292F;
         this.updateAnimation(entity.runningAnimationState, SearedHoundEntityAnimation.RUNNING, animationProgress, k);
+        this.updateAnimation(entity.diggingAnimationState, SearedHoundEntityAnimation.DIGGING, animationProgress);
     }
 
     @Override

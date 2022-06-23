@@ -41,7 +41,7 @@ public class PlayerEntityMixin extends LivingEntity implements SoulComponents {
     // Soul Methods
     @Override
     public void addSouls(int soulCount) {
-        if (this.hasStatusEffect(SoulsAndSorcery.ALLEVIATING)) {
+        if (this.hasStatusEffect(SoulsAndSorcery.ALLEVIATING) && soulCount > 0) {
             this.heal(5);
             return;
         }
@@ -75,8 +75,7 @@ public class PlayerEntityMixin extends LivingEntity implements SoulComponents {
     // Add Soul Gathering Attribute
     @Inject(method = "createPlayerAttributes", at = @At(value = "RETURN"), locals = LocalCapture.CAPTURE_FAILHARD)
     private static void addSoulGathering(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
-        cir.getReturnValue()
-                .add(SoulsAndSorcery.GENERIC_SOUL_GATHERING);
+        cir.getReturnValue().add(SoulsAndSorcery.GENERIC_SOUL_GATHERING);
     }
 
     @Shadow
