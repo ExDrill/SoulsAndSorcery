@@ -24,5 +24,13 @@
       "translation": [ 1.13, 3.2, 1.13 ],
       "scale": [ 0.68, 0.68, 0.68 ]
     }
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+         "soulsandsorcery:calling": 1
+      },
+      "model": "soulsandsorcery:item/calling_windcalling_horn"
+    }
+  ]
 }

@@ -26,6 +26,8 @@ public class EvocationTomeItem extends ArtifactItem {
         this.soulUsage = soulUsage;
     }
 
+
+
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
         user.setCurrentHand(hand);

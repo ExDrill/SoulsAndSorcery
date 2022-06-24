@@ -4,6 +4,7 @@ import com.exdrill.soulsandsorcery.SoulsAndSorcery;
 import com.exdrill.soulsandsorcery.access.SoulComponents;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.render.GameRenderer;
@@ -30,6 +31,8 @@ public abstract class InGameHudMixin extends DrawableHelper {
     @Shadow
     private MinecraftClient client;
 
+
+    @Shadow public abstract TextRenderer getTextRenderer();
 
     @Inject(method = "render", at = @At("HEAD"))
     private void renderSouls(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
@@ -66,7 +69,16 @@ public abstract class InGameHudMixin extends DrawableHelper {
                 this.client.getProfiler().push("soulText");
                 int displayX = x + 7;
                 int displayY = height + 5;
-                this.client.textRenderer.draw(matrices, String.valueOf(soulAmount), displayX, displayY, 0xFFFFFF);
+                String string = String.valueOf(soulAmount);
+
+
+                
+                if (soulAmount > 9) {
+                    this.client.textRenderer.draw(matrices, string, x + 5, displayY, 0xFFFFFF);
+                } else {
+                    this.client.textRenderer.draw(matrices, string, x + 7, displayY, 0xFFFFFF);
+                }
+
                 this.client.getProfiler().pop();
             }
         }

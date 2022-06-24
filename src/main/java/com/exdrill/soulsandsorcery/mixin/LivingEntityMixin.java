@@ -50,6 +50,8 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityAc
 
     LivingEntity entity = (LivingEntity) (Object) this;
 
+
+
    // Soul Harvesting
     @Inject(method = "onKilledBy", at = @At(value = "HEAD"))
     public void onKilledBy(LivingEntity adversary, CallbackInfo ci) {

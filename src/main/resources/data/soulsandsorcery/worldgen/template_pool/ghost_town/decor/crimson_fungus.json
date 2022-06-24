@@ -1,0 +1,14 @@
+{
+    "elements": [
+      {
+        "element": {
+          "element_type": "minecraft:feature_pool_element",
+          "feature": "minecraft:crimson_fungi",
+          "projection": "rigid"
+        },
+        "weight": 1
+      }
+    ],
+    "fallback": "minecraft:empty",
+    "name": "soulsandsorcery:ghost_town/decor/crimson_fungus"
+  }

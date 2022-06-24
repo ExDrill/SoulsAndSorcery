@@ -10,10 +10,12 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 
 import java.util.List;
 
@@ -28,10 +30,10 @@ public class WindcallingHornItem extends ArtifactItem {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (((SoulComponents) user).getSouls() >= soulUsage || user.getAbilities().creativeMode) {
             BlockPos pos = user.getBlockPos();
+            ItemStack stack = user.getStackInHand(hand);
 
             user.playSound(ModSounds.ITEM_WINDCALLING_HORN_BLOW_EVENT, 100F, 1.0F);
 
-            // Apply this.knockback to everything but the entity that is using the item
             List<LivingEntity> entities = world.getEntitiesByClass(LivingEntity.class, new Box(pos).expand(5.0D), (entity) -> entity != user);
 
             for (LivingEntity entity : entities) {
@@ -39,24 +41,43 @@ public class WindcallingHornItem extends ArtifactItem {
                 entity.damage(DamageSource.player(user), 3.0F);
             }
 
-            Vec3d vec3d = user.getBoundingBox().getCenter();
-            for(int i = 0; i < 40; ++i) {
 
-                double d = user.getRandom().nextGaussian() * 0.2D;
-                world.addParticle(ParticleTypes.POOF, vec3d.x, vec3d.y, vec3d.z, d, d, d);
+            if (world.isClient) {
+                Vec3d vec3d = user.getBoundingBox().getCenter();
+                for(int i = 0; i < 50; ++i) {
+                    double x = user.getRandom().nextGaussian() * 0.4D;
+                    double y = user.getRandom().nextGaussian() * 0.4D;
+                    double z = user.getRandom().nextGaussian() * 0.4D;
+                    world.addParticle(ParticleTypes.POOF, vec3d.x, vec3d.y, vec3d.z, x, y, z);
+                }
             }
 
-            user.getItemCooldownManager().set(this, 200);
-            ItemStack stack = user.getStackInHand(hand);
+
             if (!user.getAbilities().creativeMode) {
                 ((SoulComponents) user).addSouls(-soulUsage);
             }
-            stack.damage(1, user, (p_220043_1_) -> p_220043_1_.sendToolBreakStatus(hand));
-            return TypedActionResult.success(user.getStackInHand(hand));
+
+            world.emitGameEvent(GameEvent.INSTRUMENT_PLAY, user.getPos(), GameEvent.Emitter.of(user));
+            user.setCurrentHand(hand);
+
+            stack.damage(1, user, (user2) -> user2.sendToolBreakStatus(hand));
+            user.getItemCooldownManager().set(this, 200);
+
+            return TypedActionResult.consume(stack);
         } else {
             user.sendMessage(Text.translatable("gameplay.not_enough_souls"), true);
             return TypedActionResult.fail(user.getStackInHand(hand));
         }
+    }
+
+    @Override
+    public int getMaxUseTime(ItemStack stack) {
+        return 20;
+    }
+
+    @Override
+    public UseAction getUseAction(ItemStack stack) {
+        return UseAction.TOOT_HORN;
     }
 
     @Override

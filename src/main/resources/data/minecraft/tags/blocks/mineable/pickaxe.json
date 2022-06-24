@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "soulsandsorcery:soul_cage"
+    "soulsandsorcery:soul_cage",
+    "soulsandsorcery:bone_columns"
   ]
 }
