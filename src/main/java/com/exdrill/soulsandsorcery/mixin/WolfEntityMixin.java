@@ -59,6 +59,7 @@ public abstract class WolfEntityMixin extends TameableEntity implements WolfEnti
 
     }
 
+
     // Interactions
     @Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
     private void onInteractMob(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {

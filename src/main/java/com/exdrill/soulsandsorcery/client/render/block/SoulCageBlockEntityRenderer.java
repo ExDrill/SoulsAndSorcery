@@ -33,8 +33,6 @@ public class SoulCageBlockEntityRenderer implements BlockEntityRenderer<SoulCage
         ModelData modelData = new ModelData();
         ModelPartData modelPartData = modelData.getRoot();
         ModelPartData soul = modelPartData.addChild("soul", ModelPartBuilder.create().cuboid(-8.0F, -16.0F, 0.0F, 16.0F, 16.0F, 0.0F).uv(0, 0), ModelTransform.pivot(0, 0, 0));
-
-
         return TexturedModelData.of(modelData, 16, 16);
     }
 
@@ -54,6 +52,7 @@ public class SoulCageBlockEntityRenderer implements BlockEntityRenderer<SoulCage
         matrices.multiply(dispatcher.getRotation());
         matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(0F));
         matrices.translate(0.0F, Math.cos(tickDelta * 0.1D) * 0.1D, 0.0F);
+
         this.soul.render(matrices, SOUL_TEXTURE.getVertexConsumer(vertexConsumers, RenderLayer::getEntityCutout), 15728880, overlay);
         matrices.pop();
     }

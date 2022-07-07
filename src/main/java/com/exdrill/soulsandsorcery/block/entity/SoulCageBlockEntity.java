@@ -1,7 +1,7 @@
 package com.exdrill.soulsandsorcery.block.entity;
 
 import com.exdrill.soulsandsorcery.SoulsAndSorcery;
-import com.exdrill.soulsandsorcery.registry.ModBlockEntityType;
+import com.exdrill.soulsandsorcery.registry.ModBlockEntities;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -20,7 +20,7 @@ public class SoulCageBlockEntity extends BlockEntity {
 
     public int soulsStored;
     public SoulCageBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntityType.SOUL_CAGE, pos, state);
+        super(ModBlockEntities.SOUL_CAGE, pos, state);
     }
 
 
