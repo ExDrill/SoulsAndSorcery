@@ -11,6 +11,7 @@ import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.texture.SpriteAtlasTexture;
@@ -28,11 +29,11 @@ public class SoulsAndSorceryClient extends DrawableHelper implements ClientModIn
         ModBlocks.registerClient();
 
 
-        ItemTooltipCallback.EVENT.register((stack, tooltip, advanced) -> {
+        ItemTooltipCallback.EVENT.register(Event.DEFAULT_PHASE, (stack, tooltip, advanced) -> {
             int i = EnchantmentHelper.getLevel(SoulsAndSorcery.SOUL_SIPHON, stack);
 
             if (i > 0) {
-                advanced.set(7, Text.literal("+" + i + " ").formatted(Formatting.AQUA).append(Text.translatable("attribute.name.generic.soul_gathering")).formatted(Formatting.AQUA));
+                advanced.add(6, Text.literal("+" + i + " ").formatted(Formatting.AQUA).append(Text.translatable("attribute.name.generic.soul_gathering")).formatted(Formatting.AQUA));
             }
         });
 
