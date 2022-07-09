@@ -2,15 +2,13 @@ package com.exdrill.soulsandsorcery.item;
 
 import com.exdrill.soulsandsorcery.access.SoulComponents;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.EvokerFangsEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.MessageType;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
@@ -20,15 +18,15 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 
-import java.util.UUID;
-
-public class EvocationTomeItem extends AbstractArtifactItem {
+public class EvocationTomeItem extends ArtifactItem {
     private final int soulUsage;
 
     public EvocationTomeItem(int soulUsage, Settings settings) {
         super(soulUsage, settings);
         this.soulUsage = soulUsage;
     }
+
+
 
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
@@ -85,8 +83,8 @@ public class EvocationTomeItem extends AbstractArtifactItem {
                 ((SoulComponents) user).addSouls(-soulUsage);
             }
 
-        } else if (world.isClient && user.getItemUseTime() > 10) {
-            MinecraftClient.getInstance().inGameHud.addChatMessage(MessageType.GAME_INFO, new TranslatableText("gameplay.not_enough_souls"), UUID.randomUUID());
+        } else if (user.getItemUseTime() > 10 && user instanceof PlayerEntity player) {
+            player.sendMessage(Text.translatable("gameplay.not_enough_souls"), true);
         }
     }
 

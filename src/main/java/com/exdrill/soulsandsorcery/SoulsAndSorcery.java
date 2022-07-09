@@ -1,68 +1,55 @@
 package com.exdrill.soulsandsorcery;
 
-import com.exdrill.soulsandsorcery.effect.SoulHealingStatusEffect;
-import com.exdrill.soulsandsorcery.entity.DepartedWolfEntity;
+import com.exdrill.soulsandsorcery.effect.AlleviatingStatusEffect;
+import com.exdrill.soulsandsorcery.enchantment.SoulSiphonEnchantment;
+import com.exdrill.soulsandsorcery.entity.SearedHoundEntity;
 import com.exdrill.soulsandsorcery.registry.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
-import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
-import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
 import net.fabricmc.fabric.mixin.object.builder.SpawnRestrictionAccessor;
+import net.minecraft.client.item.ModelPredicateProviderRegistry;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.SpawnRestriction;
 import net.minecraft.entity.attribute.ClampedEntityAttribute;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.item.Items;
-import net.minecraft.loot.entry.ItemEntry;
-import net.minecraft.loot.provider.number.UniformLootNumberProvider;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.biome.BiomeKeys;
+import net.minecraft.world.gen.GenerationStep;
+import net.minecraft.world.gen.feature.PlacedFeature;
 
 public class SoulsAndSorcery implements ModInitializer {
 	public static final String MODID = "soulsandsorcery";
 
-	public static final EntityAttribute GENERIC_SOUL_GATHERING = new ClampedEntityAttribute("attribute.name.generic.soul_gathering", 0.0D, 0.0D, 3.0D).setTracked(true);
-	public static final StatusEffect SOUL_HEALING = new SoulHealingStatusEffect();
+	public static final EntityAttribute GENERIC_SOUL_GATHERING = new ClampedEntityAttribute("attribute.name.generic.soul_gathering", 0.0D, 0.0D, 9.0D).setTracked(true);
+	public static final StatusEffect ALLEVIATING = new AlleviatingStatusEffect();
+	public static final Identifier DUG_UP_ITEMS_GAMEPLAY = new Identifier(MODID, "gameplay/dug_up_items");
+	public static final Enchantment SOUL_SIPHON = new SoulSiphonEnchantment();
 
 
-	private static final Identifier NETHER_FORTRESS_LOOT = new Identifier("minecraft", "chests/nether_bridge");
-	private static final Identifier WOODLAND_MANSION_CHEST = new Identifier("minecraft", "chests/woodland_mansion");
+
 
 	@Override
 	public void onInitialize() {
 		ModItems.register();
-		Registry.register(Registry.ATTRIBUTE, new Identifier(SoulsAndSorcery.MODID, "generic.soul_gathering"), GENERIC_SOUL_GATHERING);
 		ModSounds.register();
 		ModBlocks.register();
-		ModEntityType.register();
-		ModBlockEntityType.register();
-		Registry.register(Registry.STATUS_EFFECT, new Identifier(SoulsAndSorcery.MODID, "soul_healing"), SOUL_HEALING);
+		ModEntities.register();
+		ModBlockEntities.register();
 
-		BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.SOUL_SAND_VALLEY), SpawnGroup.MONSTER, ModEntityType.DEPARTED_WOLF, 2, 3, 4);
-		SpawnRestrictionAccessor.callRegister(ModEntityType.DEPARTED_WOLF, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, DepartedWolfEntity::canSpawn);
+		Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "soul_siphon"), SOUL_SIPHON);
+		Registry.register(Registry.ATTRIBUTE, new Identifier(MODID, "generic.soul_gathering"), GENERIC_SOUL_GATHERING);
+		ModelPredicateProviderRegistry.register(ModItems.WINDCALLING_HORN, new Identifier(MODID,"calling"), (itemStack, clientWorld, livingEntity, i) -> livingEntity != null && livingEntity.isUsingItem() && livingEntity.getActiveItem() == itemStack ? 1.0F : 0.0F);
+		RegistryKey<PlacedFeature> ORE_SOUL_LAPIS = RegistryKey.of(Registry.PLACED_FEATURE_KEY, new Identifier(MODID, "ore_soul_lapis"));
+		Registry.register(Registry.STATUS_EFFECT, new Identifier(MODID, "alleviating"), ALLEVIATING);
+		BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.SOUL_SAND_VALLEY), SpawnGroup.MONSTER, ModEntities.SEARED_HOUND, 1, 1, 2);
+		BiomeModifications.addFeature(BiomeSelectors.includeByKey(BiomeKeys.SOUL_SAND_VALLEY), GenerationStep.Feature.UNDERGROUND_ORES, ORE_SOUL_LAPIS);
+		SpawnRestrictionAccessor.callRegister(ModEntities.SEARED_HOUND, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, SearedHoundEntity::canSpawn);
 
-
-		LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
-			if (NETHER_FORTRESS_LOOT.equals(id)) {
-				FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
-						.rolls(UniformLootNumberProvider.create(1, 1))
-						.withEntry(ItemEntry.builder(ModItems.PETRIFIED_ARTIFACT).weight(1).build())
-						.withEntry(ItemEntry.builder(Items.GOLD_INGOT).weight(3).build());
-
-				supplier.withPool(poolBuilder.build());
-			}
-			if (WOODLAND_MANSION_CHEST.equals(id)) {
-				FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
-						.rolls(UniformLootNumberProvider.create(1, 1))
-						.withEntry(ItemEntry.builder(ModItems.EVOCATION_TOME).weight(1).build())
-						.withEntry(ItemEntry.builder(Items.BOOK).weight(2).build());
-
-				supplier.withPool(poolBuilder.build());
-			}
-		});
 	}
 }

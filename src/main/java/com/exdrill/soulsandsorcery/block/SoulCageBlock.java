@@ -2,7 +2,7 @@ package com.exdrill.soulsandsorcery.block;
 
 import com.exdrill.soulsandsorcery.access.SoulComponents;
 import com.exdrill.soulsandsorcery.block.entity.SoulCageBlockEntity;
-import com.exdrill.soulsandsorcery.registry.ModBlockEntityType;
+import com.exdrill.soulsandsorcery.registry.ModBlockEntities;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -131,7 +131,7 @@ public class SoulCageBlock extends BlockWithEntity {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, ModBlockEntityType.SOUL_CAGE, (world1, pos, state1, entity) -> SoulCageBlockEntity.tick(world1, pos, entity));
+        return checkType(type, ModBlockEntities.SOUL_CAGE, (world1, pos, state1, entity) -> SoulCageBlockEntity.tick(world1, pos, entity));
     }
 
     static {

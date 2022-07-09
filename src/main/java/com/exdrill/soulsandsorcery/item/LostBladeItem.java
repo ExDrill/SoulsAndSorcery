@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 
 import static com.exdrill.soulsandsorcery.item.SoulWeaponItem.SOUL_GATHERING_MODIFIER_ID;
 
-public class LostBladeItem extends AbstractArtifactItem {
+public class LostBladeItem extends ArtifactItem {
     private final int soulUsage;
     private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
 

@@ -1,27 +1,38 @@
 {
   "attribute.name.generic.soul_gathering": "Soul Gathering",
+
   "item.soulsandsorcery.haunted_sickle": "Haunted Sickle",
   "item.soulsandsorcery.petrified_artifact": "Petrified Artifact",
   "item.soulsandsorcery.evocation_tome": "Evocation Tome",
   "item.soulsandsorcery.windcalling_horn": "Windcalling Horn",
   "item.soulsandsorcery.collar_of_bonding": "Collar of Bonding",
-  "item.soulsandsorcery.lost_blade": "Lost Blade",
-  "item.soulsandsorcery.departed_wolf_spawn_egg": "Departed Wolf Spawn Egg",
-  "entity.soulsandsorcery.departed_wolf": "Departed Wolf",
+
+  "item.soulsandsorcery.seared_hound_spawn_egg": "Seared Hound Spawn Egg",
+  "entity.soulsandsorcery.seared_hound": "Seared Hound",
+  "subtitles.soulsandsorcery.entity.seared_hound.growl":  "Seared Hound growls",
+  "subtitles.soulsandsorcery.entity.seared_hound.step":  "Seared Hound steps",
+  "subtitles.soulsandsorcery.entity.seared_hound.death": "Seared Hound dies",
+  "subtitles.soulsandsorcery.entity.seared_hound.hurt": "Seared Hound hurts",
+
   "block.soulsandsorcery.petrified_glass": "Petrified Glass",
   "block.soulsandsorcery.soul_cage": "Soul Cage",
-  "effect.soulsandsorcery.soul_healing": "Soul Healing",
+  "block.soulsandsorcery.soul_soil_bricks": "Soul Soil Bricks",
+  "block.soulsandsorcery.soul_lapis_ore": "Soul Lapis Ore",
+  "block.soulsandsorcery.bone_columns": "Bone Columns",
+
+  "effect.soulsandsorcery.alleviating": "Alleviating",
+
   "subtitles.soulsandsorcery.petrified_artifact.absorb": "Player absorbs artifact",
   "subtitles.soulsandsorcery.petrified_artifact.escape": "Player loses artifact",
+
   "subtitles.soulsandsorcery.item.windcalling_horn.blow": "Player blows horn",
+
   "subtitles.soulsandsorcery.block.petrified_glass.break": "Block broken",
   "subtitles.soulsandsorcery.block.petrified_glass.place": "Block placed",
+
   "tooltip.soulsandsorcery.when_used": "When used:",
   "tooltip.soulsandsorcery.soul_usage.singular": "Soul",
   "tooltip.soulsandsorcery.soul_usage.plural": "Souls",
-  "gameplay.not_enough_souls": "Not enough souls!",
-  "subtitles.soulsandsorcery.entity.departed_wolf.growl":  "Departed Wolf growls",
-  "subtitles.soulsandsorcery.entity.departed_wolf.step":  "Departed Wolf steps",
-  "subtitles.soulsandsorcery.entity.departed_wolf.death": "Departed Wolf dies",
-  "subtitles.soulsandsorcery.entity.departed_wolf.hurt": "Departed Wolf hurts"
+
+  "gameplay.not_enough_souls": "Not enough souls!"
 }

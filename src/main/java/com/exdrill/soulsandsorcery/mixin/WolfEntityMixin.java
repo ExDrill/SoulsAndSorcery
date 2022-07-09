@@ -59,16 +59,18 @@ public abstract class WolfEntityMixin extends TameableEntity implements WolfEnti
 
     }
 
+
     // Interactions
     @Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
     private void onInteractMob(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
         ItemStack stack = player.getStackInHand(hand);
-        if (wolfEntity.isTamed() && wolfEntity.getOwner() == player && stack.isOf(ModItems.COLLAR_OF_BONDING) && !this.isCollared()) {
+        PlayerEntity owner = (PlayerEntity) this.getOwner();
+
+        if (wolfEntity.isTamed() && (player == owner) && stack.isOf(ModItems.COLLAR_OF_BONDING) && !this.isCollared()) {
             this.setCollared(true);
             stack.decrement(1);
             BlockPos pos = player.getBlockPos();
             world.playSound(player, pos, SoundEvents.BLOCK_CHAIN_FALL, SoundCategory.PLAYERS, 100F, 1.0F);
-            System.out.println("Gave collar of bonding to wolf");
             cir.setReturnValue(ActionResult.SUCCESS);
         }
     }

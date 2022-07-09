@@ -14,6 +14,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.passive.WolfEntity;
@@ -24,9 +25,12 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -36,131 +40,55 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import java.util.Objects;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin extends Entity implements SoulComponents, LivingEntityAccess {
+public abstract class LivingEntityMixin extends Entity implements LivingEntityAccess {
 
-    private static final TrackedData<Integer> SOULS_AMOUNT = DataTracker.registerData(LivingEntity.class, TrackedDataHandlerRegistry.INTEGER);
-    private static final TrackedData<Boolean> CAN_SOUL_HARVEST = DataTracker.registerData(LivingEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-    LivingEntity entity = (LivingEntity)(Object)this;
+    @Shadow public abstract Random getRandom();
 
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
     }
 
-    // Data Tracker
-    @Inject(require = 1, method = "initDataTracker", at = @At("HEAD"))
-    public void onInitDataTracker(CallbackInfo ci) {
-        getDataTracker().startTracking(SOULS_AMOUNT, 0);
-        getDataTracker().startTracking(CAN_SOUL_HARVEST, false);
-    }
-
-    // Soul Methods
-    @Override
-    public void addSouls(int soulCount) {
-        int i = Math.min(this.getSouls() + soulCount, 20);
-        this.dataTracker.set(SOULS_AMOUNT, i);
-    }
-
-    @Override
-    public int getSouls() {
-        return this.dataTracker.get(SOULS_AMOUNT);
-    }
-
-    @Override
-    public void setSouls(int soulCount) {
-        int i = Math.min(soulCount, 20);
-        this.dataTracker.set(SOULS_AMOUNT, i);
-    }
-
-    @Override
-    public boolean canSoulHarvest() {
-        return this.dataTracker.get(CAN_SOUL_HARVEST);
-    }
-
-    @Override
-    public void setSoulHarvester(boolean canSoulHarvest) {
-        this.dataTracker.set(CAN_SOUL_HARVEST, canSoulHarvest);
-    }
-
-    // Nbt Data
-    @Inject(method = "writeCustomDataToNbt", at = @At("HEAD"))
-    public void writeCustomDataToNbt(NbtCompound nbt, CallbackInfo ci) {
-        nbt.putInt("SoulsAmount", this.getSouls());
-        nbt.putBoolean("canSoulHarvest", this.canSoulHarvest());
-    }
-
-    @Inject(method = "readCustomDataFromNbt", at = @At("HEAD"))
-    public void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo ci) {
-        this.setSouls(nbt.getInt("SoulsAmount"));
-        this.setSoulHarvester(nbt.getBoolean("canSoulHarvest"));
-
-    }
+    LivingEntity entity = (LivingEntity) (Object) this;
 
 
-
-
-
-    // Add Soul Gathering Attribute
-    @Inject(method = "createLivingAttributes", at = @At(value = "RETURN"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private static void addSoulGathering(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
-        cir.getReturnValue()
-                .add(SoulsAndSorcery.GENERIC_SOUL_GATHERING);
-    }
 
    // Soul Harvesting
     @Inject(method = "onKilledBy", at = @At(value = "HEAD"))
     public void onKilledBy(LivingEntity adversary, CallbackInfo ci) {
-        World world = ((LivingEntity)(Object)this).world;
-        if (!world.isClient && adversary != null) {
+        World world = this.world;
+        Random random = this.getRandom();
+        BlockPos pos = this.getBlockPos();
 
-            // Soul Harvest
-            if (((SoulComponents) adversary).canSoulHarvest()) {
+        if (!world.isClient) {
+            if (adversary instanceof PlayerEntity player) {
 
-                int getSoulGathering = (int) adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING);
-                if (adversary.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) == getSoulGathering) {
-                    ((SoulComponents) adversary).addSouls(getSoulGathering + 1);
-                }
+                float attribute = (float) player.getAttributeValue(SoulsAndSorcery.GENERIC_SOUL_GATHERING) / 10;
 
-                // Grabbing Entity Position
-                BlockPos pos = entity.getBlockPos();
-
-                // Effects
-                world.playSound(null, pos, SoundEvents.PARTICLE_SOUL_ESCAPE, SoundCategory.PLAYERS, 50.0F, 1.0F);
-                ((ServerWorld)world).spawnParticles(ParticleTypes.SOUL, entity.getX(), entity.getY() + (entity.getStandingEyeHeight() * 0.7), entity.getZ(), 1, 0, 0, 0, 0);
-
-                if (adversary.getStatusEffect(SoulsAndSorcery.SOUL_HEALING) != null) {
-                    adversary.heal(1 + getSoulGathering);
+                if (random.nextFloat() < 0.1 + attribute) {
+                    ((SoulComponents)player).addSouls(1);
+                    soulHarvestingEffects(pos);
                 }
             }
 
-            if (adversary instanceof WolfEntity wolf && ((WolfEntityAccess) wolf).isCollared()) {
-                PlayerEntity player = (PlayerEntity) wolf.getOwner();
-                System.out.println("Success");
-                if (player != null && ((SoulComponents) player).canSoulHarvest()) {
-                    BlockPos pos = entity.getBlockPos();
-                    ((SoulComponents) player).addSouls(1);
-                    world.playSound(null, pos, SoundEvents.PARTICLE_SOUL_ESCAPE, SoundCategory.AMBIENT, 50.0F, 1.0F);
-                    ((ServerWorld)world).spawnParticles(ParticleTypes.SOUL, entity.getX(), entity.getY() + (entity.getStandingEyeHeight() * 0.7), entity.getZ(), 1, 0, 0, 0, 0);
+            if (adversary instanceof WolfEntity wolf && ((WolfEntityAccess)wolf).isCollared()) {
+                PlayerEntity owner = (PlayerEntity) wolf.getOwner();
+                if (owner != null && random.nextFloat() < 0.5f) {
+                    ((SoulComponents)owner).addSouls(1);
+                    soulHarvestingEffects(pos);
                 }
             }
         }
     }
 
-    // Drop Petrified Soul on Death
+    // Creates particles and sound when soul has been harvested
+    private void soulHarvestingEffects(BlockPos pos) {
+        ((ServerWorld)world).spawnParticles(ParticleTypes.SOUL, pos.getX(), pos.getY() + 0.5, pos.getZ(), 0, 0, 0, 0, 0);
+        world.playSound(null, pos, SoundEvents.PARTICLE_SOUL_ESCAPE, SoundCategory.PLAYERS, 0.5F, 1.0F);
+    }
+
+    // Wolf drops their collar when they are killed
     @Inject(method = "drop", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;shouldDropLoot()Z"))
     private void drop(DamageSource source, CallbackInfo ci) {
-        if (((SoulComponents) entity).canSoulHarvest()) {
-            // Define Item
-            ItemStack stack = new ItemStack(ModItems.PETRIFIED_ARTIFACT);
-            entity.dropStack(stack);
-            // Get Position and World
-            BlockPos pos = entity.getBlockPos();
-            World world = entity.world;
-            // Play Sound
-            if (!world.isClient) {
-                world.playSound(null, pos, ModSounds.ITEM_PETRIFIED_ARTIFACT_ESCAPE_EVENT, SoundCategory.PLAYERS, 50.0F, 1.0F);
-            }
-        }
-
         if (entity instanceof WolfEntity wolf && ((WolfEntityAccess) wolf).isCollared()) {
             ItemStack stack = new ItemStack(ModItems.COLLAR_OF_BONDING);
             entity.dropStack(stack);

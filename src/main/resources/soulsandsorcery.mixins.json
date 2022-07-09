@@ -4,13 +4,15 @@
   "package": "com.exdrill.soulsandsorcery.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "PlayerEntityMixin",
     "LivingEntityMixin",
     "WolfEntityMixin"
   ],
   "client": [
     "client.InGameHudMixin",
     "client.PlayerEntityModelMixin",
-    "client.WolfEntityRendererMixin"
+    "client.WolfEntityRendererMixin",
+    "client.WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

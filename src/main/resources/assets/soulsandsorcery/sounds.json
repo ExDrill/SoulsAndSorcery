@@ -33,33 +33,51 @@
       "soulsandsorcery:block/petrified_glass/place3"
     ]
   },
-  "entity.departed_wolf.growl": {
-    "subtitle": "subtitles.soulsandsorcery.entity.departed_wolf.growl",
+  "block.soul_ore.break": {
+    "subtitle": "subtitles.block.generic.break",
     "sounds": [
-      "soulsandsorcery:entity/departed_wolf/growl1",
-      "soulsandsorcery:entity/departed_wolf/growl2",
-      "soulsandsorcery:entity/departed_wolf/growl3"
+        "soulsandsorcery:block/soul_ore/break1",
+        "soulsandsorcery:block/soul_ore/break2",
+        "soulsandsorcery:block/soul_ore/break3",
+        "soulsandsorcery:block/soul_ore/break4"
     ]
   },
-  "entity.departed_wolf.step": {
-    "subtitle": "subtitles.soulsandsorcery.entity.departed_wolf.step",
+  "block.soul_ore.place": {
+      "subtitle": "subtitles.block.generic.place",
+      "sounds": [
+          "soulsandsorcery:block/soul_ore/break1",
+          "soulsandsorcery:block/soul_ore/break2",
+          "soulsandsorcery:block/soul_ore/break3",
+          "soulsandsorcery:block/soul_ore/break4"
+      ]
+  },
+  "entity.seared_hound.growl": {
+    "subtitle": "subtitles.soulsandsorcery.entity.seared_hound.growl",
     "sounds": [
-      "soulsandsorcery:entity/departed_wolf/step1",
-      "soulsandsorcery:entity/departed_wolf/step2",
-      "soulsandsorcery:entity/departed_wolf/step3"
+      "soulsandsorcery:entity/seared_hound/growl1",
+      "soulsandsorcery:entity/seared_hound/growl2",
+      "soulsandsorcery:entity/seared_hound/growl3"
     ]
   },
-  "entity.departed_wolf.death": {
-    "subtitle": "subtitles.soulsandsorcery.entity.departed_wolf.death",
+  "entity.seared_hound.step": {
+    "subtitle": "subtitles.soulsandsorcery.entity.seared_hound.step",
     "sounds": [
-      "soulsandsorcery:entity/departed_wolf/death"
+      "soulsandsorcery:entity/seared_hound/step1",
+      "soulsandsorcery:entity/seared_hound/step2",
+      "soulsandsorcery:entity/seared_hound/step3"
     ]
   },
-  "entity.departed_wolf.hurt": {
-    "subtitle": "subtitles.soulsandsorcery.entity.departed_wolf.hurt",
+  "entity.seared_hound.death": {
+    "subtitle": "subtitles.soulsandsorcery.entity.seared_hound.death",
     "sounds": [
-      "soulsandsorcery:entity/departed_wolf/growl1",
-      "soulsandsorcery:entity/departed_wolf/growl2"
+      "soulsandsorcery:entity/seared_hound/death"
+    ]
+  },
+  "entity.seared_hound.hurt": {
+    "subtitle": "subtitles.soulsandsorcery.entity.seared_hound.hurt",
+    "sounds": [
+      "soulsandsorcery:entity/seared_hound/growl1",
+      "soulsandsorcery:entity/seared_hound/growl2"
     ]
   }
 }
