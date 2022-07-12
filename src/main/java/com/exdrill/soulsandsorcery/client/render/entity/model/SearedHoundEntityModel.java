@@ -4,6 +4,8 @@ package com.exdrill.soulsandsorcery.client.render.entity.model;
 import com.exdrill.soulsandsorcery.SoulsAndSorcery;
 import com.exdrill.soulsandsorcery.client.render.entity.animation.SearedHoundEntityAnimation;
 import com.exdrill.soulsandsorcery.entity.SearedHoundEntity;
+import com.outercloud.scribe.Scribe;
+import com.outercloud.scribe.data.animation.DataDrivenAnimation;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.VertexConsumer;
@@ -75,8 +77,10 @@ public class SearedHoundEntityModel<T extends HostileEntity> extends SinglePartE
         this.head.pitch = headPitch * 0.017453292F;
         this.head.yaw = headYaw * 0.017453292F;
         this.updateAnimation(entity.runningAnimationState, SearedHoundEntityAnimation.RUNNING, animationProgress, k);
-        this.updateAnimation(entity.diggingAnimationState, SearedHoundEntityAnimation.DIGGING, animationProgress);
+        this.updateAnimation(entity.diggingAnimationState, DataDrivenAnimation.getAnimation(DIGGING), animationProgress);
     }
+
+    private final Identifier DIGGING = new Identifier(SoulsAndSorcery.MODID, "seared_hound/digging");
 
     @Override
     public ModelPart getPart() {

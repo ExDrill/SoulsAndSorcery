@@ -28,7 +28,7 @@ public class WindcallingHornItem extends ArtifactItem {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (((SoulComponents) user).getSouls() >= soulUsage || user.getAbilities().creativeMode) {
+        if (canUseSoulItem(user)) {
             BlockPos pos = user.getBlockPos();
             ItemStack stack = user.getStackInHand(hand);
 
@@ -52,10 +52,7 @@ public class WindcallingHornItem extends ArtifactItem {
                 }
             }
 
-
-            if (!user.getAbilities().creativeMode) {
-                ((SoulComponents) user).addSouls(-soulUsage);
-            }
+            ((SoulComponents) user).addSouls(-soulUsage);
 
             world.emitGameEvent(GameEvent.INSTRUMENT_PLAY, user.getPos(), GameEvent.Emitter.of(user));
             user.setCurrentHand(hand);

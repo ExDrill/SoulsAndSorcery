@@ -11,7 +11,7 @@ import net.minecraft.client.render.entity.animation.Transformation.Targets;
 public class SearedHoundEntityAnimation {
 
     public static final Animation RUNNING;
-    public static final Animation DIGGING;
+    //public static final Animation DIGGING;
 
     static {
         RUNNING = Builder
@@ -114,7 +114,7 @@ public class SearedHoundEntityAnimation {
                 )
                 .looping()
                 .build();
-        DIGGING = Builder.create(3.0F)
+        /*DIGGING = Builder.create(3.0F)
                 .addBoneAnimation(
                         "body",
                         new Transformation(
@@ -245,5 +245,7 @@ public class SearedHoundEntityAnimation {
                         )
                 )
                 .build();
+
+         */
     }
 }

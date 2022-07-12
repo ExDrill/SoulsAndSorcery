@@ -57,7 +57,7 @@ public class EvocationTomeItem extends ArtifactItem {
         float f = (float) MathHelper.atan2(user.getYaw() - user.getZ(), user.getYaw() - user.getX());
 
         // Functions
-        if (user.getItemUseTime() > 10 && (((SoulComponents) user).getSouls() >= soulUsage || user instanceof PlayerEntity player && player.getAbilities().creativeMode)) {
+        if (user.getItemUseTime() > 10 && user instanceof PlayerEntity player && canUseSoulItem(player)) {
             // Circle of Fangs
             if (user.isSneaking()) {
                 for (int i = 0; i < 8; ++i) {
@@ -78,10 +78,8 @@ public class EvocationTomeItem extends ArtifactItem {
             // Remove 1 Durability
             stack.damage(1, user, (p_220043_1_) -> p_220043_1_.sendToolBreakStatus(hand));
 
-            // Remove Souls
-            if (user instanceof PlayerEntity player && !player.getAbilities().creativeMode) {
-                ((SoulComponents) user).addSouls(-soulUsage);
-            }
+            ((SoulComponents) player).addSouls(-soulUsage);
+
 
         } else if (user.getItemUseTime() > 10 && user instanceof PlayerEntity player) {
             player.sendMessage(Text.translatable("gameplay.not_enough_souls"), true);

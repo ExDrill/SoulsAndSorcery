@@ -1,6 +1,8 @@
 package com.exdrill.soulsandsorcery.item;
 
+import com.exdrill.soulsandsorcery.access.SoulComponents;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -36,6 +38,9 @@ public class ArtifactItem extends Item {
 
      */
 
+    public boolean canUseSoulItem(PlayerEntity player) {
+        return ((SoulComponents) player).getSouls() >= soulUsage || player.isCreative();
+    }
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
@@ -45,7 +50,6 @@ public class ArtifactItem extends Item {
         } else {
             tooltip.add(Text.literal(" ").append(Text.literal(soulUsage * -1 + " ")).append(Text.translatable("tooltip.soulsandsorcery.soul_usage.plural")).formatted(Formatting.AQUA));
         }
-        tooltip.add(Text.literal(""));
         super.appendTooltip(stack, world, tooltip, context);
     }
 }

@@ -5,6 +5,8 @@
   "item.soulsandsorcery.petrified_artifact": "Petrified Artifact",
   "item.soulsandsorcery.evocation_tome": "Evocation Tome",
   "item.soulsandsorcery.windcalling_horn": "Windcalling Horn",
+  "item.soulsandsorcery.dragon_gauntlet": "Dragon Gauntlet",
+  "item.soulsandsorcery.glaring_eye": "Glaring Eye",
   "item.soulsandsorcery.collar_of_bonding": "Collar of Bonding",
 
   "item.soulsandsorcery.seared_hound_spawn_egg": "Seared Hound Spawn Egg",
@@ -21,6 +23,7 @@
   "block.soulsandsorcery.bone_columns": "Bone Columns",
 
   "effect.soulsandsorcery.alleviating": "Alleviating",
+  "enchantment.soulsandsorcery.soul_siphon": "Soul Siphon",
 
   "subtitles.soulsandsorcery.petrified_artifact.absorb": "Player absorbs artifact",
   "subtitles.soulsandsorcery.petrified_artifact.escape": "Player loses artifact",

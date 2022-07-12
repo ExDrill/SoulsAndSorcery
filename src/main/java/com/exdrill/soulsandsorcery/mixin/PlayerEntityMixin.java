@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,7 +34,12 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Mixin(PlayerEntity.class)
-public class PlayerEntityMixin extends LivingEntity implements SoulComponents {
+public abstract class PlayerEntityMixin extends LivingEntity implements SoulComponents {
+
+
+    @Shadow public abstract boolean isCreative();
+
+    @Shadow public abstract PlayerInventory getInventory();
 
     @Shadow @Final private PlayerInventory inventory;
     private static final UUID SOUL_SIPHON_UUID = UUID.fromString("8311f5e9-8e53-4b8d-b7b1-a8bc81fa4af0");
@@ -63,8 +69,13 @@ public class PlayerEntityMixin extends LivingEntity implements SoulComponents {
             this.heal(5);
             return;
         }
-        int i = Math.min(this.getSouls() + soulCount, 20);
+        if (this.isCreative() && soulCount < 0) {
+            return;
+        }
+
+        int i = MathHelper.clamp(this.getSouls() + soulCount, 0, 20);
         this.dataTracker.set(SOULS_AMOUNT, i);
+
     }
 
     @Override
@@ -78,20 +89,29 @@ public class PlayerEntityMixin extends LivingEntity implements SoulComponents {
         this.dataTracker.set(SOULS_AMOUNT, i);
     }
 
+
+
     @Inject(method = "tick", at = @At("HEAD"))
     private void tick(CallbackInfo ci) {
-        if (shouldRemoveSoulSiphon() && this.inventory.getSwappableHotbarSlot() > 0) {
+        if (shouldRemoveSoulSiphon()) {
             removeSoulSiphon();
         }
+
         addSoulSiphon();
 
     }
+
+
 
     private boolean shouldRemoveSoulSiphon() {
         ItemStack itemStack = player.getStackInHand(Hand.MAIN_HAND);
         int i = EnchantmentHelper.getLevel(SoulsAndSorcery.SOUL_SIPHON, itemStack);
 
-        return i == 0;
+        return getSoulSiphonLevel(itemStack) == i;
+    }
+
+    private static int getSoulSiphonLevel(ItemStack itemStack) {
+        return EnchantmentHelper.getLevel(SoulsAndSorcery.SOUL_SIPHON, itemStack);
     }
 
     private void addSoulSiphon() {
@@ -101,6 +121,10 @@ public class PlayerEntityMixin extends LivingEntity implements SoulComponents {
         if (i > 0) {
             EntityAttributeInstance entityAttributeInstance = this.getAttributeInstance(SoulsAndSorcery.GENERIC_SOUL_GATHERING);
             if (entityAttributeInstance == null) {
+                return;
+            }
+
+            if (entityAttributeInstance.getModifier(SOUL_SIPHON_UUID) != null) {
                 return;
             }
 
